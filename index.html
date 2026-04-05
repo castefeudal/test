@@ -243,6 +243,14 @@
         .timeline-nav { transition: all 0.3s ease; }
         .timeline-nav.active { color: #D4AF37; border-bottom-color: #D4AF37; }
 
+        /* === ФИКС ЦВЕТОВ КНОПОК РАСЧЕТА (ОТВЯЗКА ОТ CDN) === */
+        .soma-ecto { border-color: #0ea5e9 !important; color: #0ea5e9 !important; box-shadow: 0 0 15px rgba(14,165,233,0.4) !important; }
+        .soma-meso { border-color: #D4AF37 !important; color: #D4AF37 !important; box-shadow: 0 0 15px rgba(212,175,55,0.4) !important; }
+        .soma-endo { border-color: #ef4444 !important; color: #ef4444 !important; box-shadow: 0 0 15px rgba(239,68,68,0.4) !important; }
+        
+        .gender-male { border-color: #3b82f6 !important; color: #3b82f6 !important; box-shadow: 0 0 15px rgba(59,130,246,0.3) !important; }
+        .gender-female { border-color: #ec4899 !important; color: #ec4899 !important; box-shadow: 0 0 15px rgba(236,72,153,0.3) !important; }
+
         /* === МОБИЛЬНАЯ ВЕРСТКА === */
         @media (max-width: 1024px) {
             .insight-ghost { display: none !important; }
@@ -266,11 +274,11 @@
     <div class="noise-overlay"></div>
     <div id="cursor" class="custom-cursor"></div>
 
-    <!-- Плавающая кнопка связи (Task 5) -->
+    <!-- Плавающая кнопка связи (Уменьшена по размеру p-3 и w-5 h-5) -->
     <a href="https://t.me/markovmade?text=Здравствуйте!%20Готов%20работать%20над%20собой%20и%20изменить%20свою%20жизнь%20к%20лучшему!" target="_blank" id="floating-cta" class="interactive fixed bottom-8 right-6 md:right-10 z-[90] opacity-0 translate-y-10 pointer-events-none transition-all duration-500 ease-out group flex items-center justify-center">
         <div class="absolute inset-0 rounded-full bg-gold/50 animate-ping opacity-30 group-hover:opacity-100"></div>
-        <div class="relative bg-obsidian border border-gold/50 text-gold rounded-full p-4 shadow-[0_0_20px_rgba(212,175,55,0.2)] group-hover:bg-gold group-hover:text-obsidian group-hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-300">
-            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+        <div class="relative bg-obsidian border border-gold/50 text-gold rounded-full p-3 shadow-[0_0_20px_rgba(212,175,55,0.2)] group-hover:bg-gold group-hover:text-obsidian group-hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
         </div>
     </a>
 
@@ -354,7 +362,6 @@
                         Я здесь, чтобы оставить после себя имя и поколения людей с крепкими ценностями. Каждый день проживая ради одного: помогать и быть по‑настоящему полезным.
                     </p>
                     <div class="mt-12 flex flex-col items-start gap-4">
-                        <!-- Task 10: Золотая змейка на кнопке -->
                         <a href="#services" class="relative inline-flex overflow-hidden rounded-sm p-[2px] group interactive">
                             <span class="absolute inset-[-1000%] animate-spin-slow bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,#D4AF37_50%,transparent_100%)]"></span>
                             <span class="relative inline-flex h-full w-full items-center justify-center bg-obsidian px-10 py-4 text-xs font-sans font-bold tracking-luxury uppercase text-platinum transition-all group-hover:bg-gold group-hover:text-obsidian">
@@ -426,7 +433,7 @@
             </div>
         </section>
 
-        <!-- PRINCIPLES (Task 7: Animated Icons & Visible Text) -->
+        <!-- PRINCIPLES -->
         <section id="principles" class="section-block relative py-24 md:py-36 bg-obsidian text-platinum overflow-hidden" data-insight="Внешность привлекает. Принципы удерживают.">
             <div class="absolute inset-0 abstract-bg opacity-30 pointer-events-none"></div>
             <div class="container mx-auto px-6 md:px-12 relative z-10">
@@ -446,7 +453,6 @@
                         <div>
                             <div class="flex items-center gap-4 mb-6 opacity-50 group-hover:opacity-100 transition-opacity">
                                 <span class="font-serif text-3xl text-gold">I.</span>
-                                <!-- Icon: Architecture/Eye -->
                                 <svg class="w-8 h-8 text-gold transform group-hover:scale-110 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -463,7 +469,6 @@
                          <div>
                             <div class="flex items-center gap-4 mb-6 opacity-50 group-hover:opacity-100 transition-opacity">
                                 <span class="font-serif text-3xl text-gold">II.</span>
-                                <!-- Icon: Shield/Strength -->
                                 <svg class="w-8 h-8 text-gold transform group-hover:rotate-12 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                 </svg>
@@ -479,7 +484,6 @@
                         <div>
                             <div class="flex items-center gap-4 mb-6 opacity-50 group-hover:opacity-100 transition-opacity">
                                 <span class="font-serif text-3xl text-gold">III.</span>
-                                <!-- Icon: Compass/Autonomy -->
                                 <svg class="w-8 h-8 text-gold transform group-hover:scale-110 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
@@ -495,7 +499,6 @@
                         <div>
                             <div class="flex items-center gap-4 mb-6 opacity-50 group-hover:opacity-100 transition-opacity">
                                 <span class="font-serif text-3xl text-gold">IV.</span>
-                                <!-- Icon: Hourglass/Time -->
                                 <svg class="w-8 h-8 text-gold transform group-hover:-rotate-180 transition-transform duration-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
@@ -657,7 +660,7 @@
             </div>
         </section>
 
-        <!-- SERVICES (Task 8: Icons & Text Visibility) -->
+        <!-- SERVICES -->
         <section id="services" class="section-block relative py-24 bg-obsidian text-platinum" data-insight="Инвестируйте в единственное, что нельзя отнять — в себя.">
             <div class="container mx-auto px-6 md:px-12">
                 <div class="mb-20 fade-in-up">
@@ -674,7 +677,6 @@
                         <button class="w-full py-10 px-2 flex flex-col md:flex-row md:items-center justify-between text-left gap-6 outline-none interactive group" onclick="toggleAccordion(this)">
                             <div class="flex items-center gap-4 md:w-1/4">
                                 <span class="font-sans text-xs text-dim/50 tracking-widest">(01)</span>
-                                <!-- Icon: Dumbbell -->
                                 <svg class="w-5 h-5 text-gold opacity-80 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M3 14h18M6 6v12M18 6v12"/></svg>
                                 <span class="font-sans text-[10px] text-gold tracking-luxury uppercase border border-gold/20 px-3 py-1.5 rounded-full group-hover:bg-gold group-hover:text-black transition-all duration-300">DOMINANCE</span>
                             </div>
@@ -708,7 +710,6 @@
                                                 <img src="https://i.ibb.co/0VvVNjjG/MARKOVMADE.jpg" loading="lazy" class="relative w-full h-auto object-contain grayscale group-hover/image:grayscale-0 transition-all duration-700" alt="Мужской тренинг">
                                                 <div class="service-badge">Результат Гарантирован</div>
                                             </div>
-                                            <!-- Обновленный бордер для отзывов (Task 8) -->
                                             <div class="font-sans text-platinum/90 text-sm leading-relaxed pl-6 border-l-[3px] border-gold transition-opacity duration-500">
                                                 "Раньше я думал, что кубики пресса — это для моделей. Оказалось, это вопрос правильных настроек организма. С Павлом мы <span class="text-gold font-bold">выстроили систему питания и нагрузок</span> под мой график."<br><span class="font-sans text-[10px] text-gold/70 not-italic mt-4 block font-bold tracking-widest uppercase">— Антон Королев, 34 года, Предприниматель</span>
                                             </div>
@@ -724,7 +725,6 @@
                         <button class="w-full py-10 px-2 flex flex-col md:flex-row md:items-center justify-between text-left gap-6 outline-none interactive group" onclick="toggleAccordion(this)">
                             <div class="flex items-center gap-4 md:w-1/4">
                                 <span class="font-sans text-xs text-dim/50 tracking-widest">(02)</span>
-                                <!-- Icon: Sparkles -->
                                 <svg class="w-5 h-5 text-gold opacity-80 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                                 <span class="font-sans text-[10px] text-gold tracking-luxury uppercase border border-gold/20 px-3 py-1.5 rounded-full group-hover:bg-gold group-hover:text-black transition-all duration-300">AESTHETICS</span>
                             </div>
@@ -773,7 +773,6 @@
                         <button class="w-full py-10 px-2 flex flex-col md:flex-row md:items-center justify-between text-left gap-6 outline-none interactive group" onclick="toggleAccordion(this)">
                             <div class="flex items-center gap-4 md:w-1/4">
                                 <span class="font-sans text-xs text-dim/50 tracking-widest">(03)</span>
-                                <!-- Icon: Pulse/Health -->
                                 <svg class="w-5 h-5 text-gold opacity-80 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                                 <span class="font-sans text-[10px] text-gold tracking-luxury uppercase border border-gold/20 px-3 py-1.5 rounded-full group-hover:bg-gold group-hover:text-black transition-all duration-300">HEALTH</span>
                             </div>
@@ -822,7 +821,6 @@
                         <button class="w-full py-10 px-2 flex flex-col md:flex-row md:items-center justify-between text-left gap-6 outline-none interactive group" onclick="toggleAccordion(this)">
                             <div class="flex items-center gap-4 md:w-1/4">
                                 <span class="font-sans text-xs text-dim/50 tracking-widest">(04)</span>
-                                <!-- Icon: Brain -->
                                 <svg class="w-5 h-5 text-gold opacity-80 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
                                 <span class="font-sans text-[10px] text-gold tracking-luxury uppercase border border-gold/20 px-3 py-1.5 rounded-full group-hover:bg-gold group-hover:text-black transition-all duration-300">MINDSET</span>
                             </div>
@@ -946,7 +944,6 @@
                         <div class="relative w-full bg-[#080808] border border-gold/30 p-8 md:p-12 shadow-[0_0_60px_rgba(0,0,0,0.8)] noise-bg overflow-hidden flex flex-col items-center text-center">
                             <div class="absolute top-0 left-0 w-full h-1 bg-gold"></div>
                             <div class="absolute bottom-0 right-0 w-20 h-1 bg-gold"></div>
-                            <!-- Task 4: Dynamic ID -->
                             <div class="absolute top-4 right-4 text-[8px] font-sans text-gold/60 tracking-widest border border-gold/20 px-2 py-1 rounded">ID: <span id="card-id" class="text-gold font-bold">GEN-000</span></div>
                             <div class="relative z-10 space-y-6">
                                 <div class="w-16 h-16 mx-auto border border-gold/20 rounded-full flex items-center justify-center bg-gold/5">
@@ -959,7 +956,6 @@
                                 <div class="py-4 border-t border-white/10 border-b border-white/10">
                                     <p class="font-sans text-xs text-gold/80 italic">Ваша заявка готова к отправке напрямую основателю.</p>
                                 </div>
-                                <!-- Task 1: Telegram Direct Link -->
                                 <button id="telegram-btn" class="interactive group w-full py-4 bg-gold/10 border border-gold/40 hover:bg-gold transition-all duration-300 flex items-center justify-center gap-3">
                                     <span class="font-sans text-[10px] font-bold tracking-[0.2em] text-gold group-hover:text-obsidian uppercase">Отправить в Telegram</span>
                                     <svg class="w-4 h-4 text-gold group-hover:text-obsidian transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
@@ -1020,7 +1016,7 @@
                                     <!-- Пол -->
                                     <div>
                                         <div class="flex gap-4">
-                                            <button class="ffmi-gender active flex-1 py-3 border border-[#3b82f6] text-[#3b82f6] shadow-[0_0_15px_rgba(59,130,246,0.3)] text-xs tracking-widest uppercase rounded-sm transition-all" data-gender="male">Мужчина</button>
+                                            <button class="ffmi-gender active gender-male flex-1 py-3 border text-xs tracking-widest uppercase rounded-sm transition-all" data-gender="male">Мужчина</button>
                                             <button class="ffmi-gender flex-1 py-3 border border-white/20 text-dim text-xs tracking-widest uppercase rounded-sm transition-all" data-gender="female">Женщина</button>
                                         </div>
                                     </div>
@@ -1029,7 +1025,7 @@
                                         <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase block mb-3 text-center">Соматип (Костяк)</label>
                                         <div class="flex gap-2">
                                             <button class="ffmi-soma flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="ecto">Эктоморф</button>
-                                            <button class="ffmi-soma active flex-1 py-3 border border-gold text-gold shadow-[0_0_15px_rgba(212,175,55,0.4)] text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="meso">Мезоморф</button>
+                                            <button class="ffmi-soma active soma-meso flex-1 py-3 border text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="meso">Мезоморф</button>
                                             <button class="ffmi-soma flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="endo">Эндоморф</button>
                                         </div>
                                         <div class="bg-white/5 border border-white/10 rounded-sm p-4 mt-4">
@@ -1072,7 +1068,6 @@
                                     <svg class="w-12 h-12 text-dim/30 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                     <span class="font-sans text-xs text-platinum/80 tracking-widest uppercase text-center leading-loose">Введите метрики <br> для формирования отчета</span>
                                 </div>
-                                <!-- Task 2 & 4: CSS Анимация сканирования на весь блок -->
                                 <div id="calc-fitness-loading" class="hidden absolute inset-0 flex-col items-center justify-center bg-obsidian z-30">
                                     <div class="w-full h-1.5 bg-white/10 absolute top-0 left-0 overflow-hidden"><div class="h-full bg-gold w-1/2 animate-scanline-horizontal shadow-[0_0_15px_#D4AF37]"></div></div>
                                     <span class="font-sans text-xs text-gold tracking-widest uppercase animate-pulse mb-4">Cyber-Scan Active</span>
@@ -1091,7 +1086,6 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Task 12: Градиентная шкала Оцифровки -->
                                     <div class="mb-8 px-4 w-full">
                                         <div class="w-full h-1.5 rounded-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 relative mt-4 shadow-[0_0_10px_rgba(255,255,255,0.05)]">
                                             <div id="ffmi-marker" class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-obsidian rounded-full transition-all duration-[1.5s] ease-out" style="left: 0%; box-shadow: 0 0 10px rgba(255,255,255,0.8);"></div>
@@ -1133,7 +1127,7 @@
                                     <div>
                                         <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase block mb-3 text-center">Пол</label>
                                         <div class="flex gap-2">
-                                            <button class="nutri-gender active flex-1 py-3 border border-[#3b82f6] text-[#3b82f6] shadow-[0_0_15px_rgba(59,130,246,0.3)] text-[10px] tracking-widest uppercase rounded-sm transition-all" data-gender="male">М</button>
+                                            <button class="nutri-gender active gender-male flex-1 py-3 border text-[10px] tracking-widest uppercase rounded-sm transition-all" data-gender="male">М</button>
                                             <button class="nutri-gender flex-1 py-3 border border-white/20 text-dim text-[10px] tracking-widest uppercase rounded-sm transition-all" data-gender="female">Ж</button>
                                         </div>
                                     </div>
@@ -1166,7 +1160,7 @@
                                         <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase block mb-2 text-center">Соматип (Костяк)</label>
                                         <div class="flex gap-2">
                                             <button class="nutri-soma flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="ecto">Эктоморф</button>
-                                            <button class="nutri-soma active flex-1 py-3 border border-gold text-gold shadow-[0_0_15px_rgba(212,175,55,0.4)] text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="meso">Мезоморф</button>
+                                            <button class="nutri-soma active soma-meso flex-1 py-3 border text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="meso">Мезоморф</button>
                                             <button class="nutri-soma flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="endo">Эндоморф</button>
                                         </div>
                                     </div>
@@ -1188,7 +1182,6 @@
                                     <svg class="w-12 h-12 text-dim/30 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
                                     <span class="font-sans text-xs text-platinum/80 tracking-widest uppercase text-center leading-loose">Введите метрики <br> для биохимического анализа</span>
                                 </div>
-                                <!-- Task 2 & 4: Scanline -->
                                 <div id="calc-nutri-loading" class="hidden absolute inset-0 flex-col items-center justify-center bg-obsidian z-30">
                                     <div class="w-full h-1.5 bg-white/10 absolute top-0 left-0 overflow-hidden"><div class="h-full bg-platinum w-1/2 animate-scanline-horizontal shadow-[0_0_15px_#F2F2F2]"></div></div>
                                     <span class="font-sans text-xs text-platinum tracking-widest uppercase animate-pulse mb-4">Bio-Scan Active</span>
@@ -1276,7 +1269,6 @@
                                     <svg class="w-12 h-12 text-dim/30 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                                     <span class="font-sans text-xs text-platinum/80 tracking-widest uppercase text-center leading-loose">Заполните метрики (1-10) <br> для оценки состояния</span>
                                 </div>
-                                <!-- Task 2 & 4: Scanline -->
                                 <div id="calc-psycho-loading" class="hidden absolute inset-0 flex-col items-center justify-center bg-obsidian z-30">
                                     <div class="w-full h-1.5 bg-white/10 absolute top-0 left-0 overflow-hidden"><div class="h-full bg-red-500 w-1/2 animate-scanline-horizontal shadow-[0_0_15px_#EF4444]"></div></div>
                                     <span class="font-sans text-xs text-red-500 tracking-widest uppercase animate-pulse mb-4">Neural-Scan Active</span>
@@ -1292,7 +1284,6 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Task 12: Градиентная шкала Оцифровки -->
                                     <div class="mb-8 px-4 w-full">
                                         <div class="w-full h-1.5 rounded-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 relative mt-4 shadow-[0_0_10px_rgba(255,255,255,0.05)]">
                                             <div id="psycho-marker" class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-obsidian rounded-full transition-all duration-[1.5s] ease-out" style="left: 0%; box-shadow: 0 0 10px rgba(255,255,255,0.8);"></div>
@@ -1374,7 +1365,7 @@
                             <span class="font-serif text-xl text-platinum group-hover:text-obsidian transition-colors relative z-10">Написать в WhatsApp</span>
                         </a>
 
-                        <a href="https://t.me/markovmade" target="_blank" class="contact-btn group flex-1 relative py-12 px-8 text-center border border-white/10 hover:border-[#229ED9] hover:bg-[#229ED9] transition-all duration-500 overflow-hidden">
+                        <a href="https://t.me/markovmade?text=Здравствуйте!%20Готов%20работать%20над%20собой%20и%20изменить%20свою%20жизнь%20к%20лучшему!" target="_blank" class="contact-btn group flex-1 relative py-12 px-8 text-center border border-white/10 hover:border-[#229ED9] hover:bg-[#229ED9] transition-all duration-500 overflow-hidden">
                             <svg class="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none -z-10 scale-125 group-hover:scale-150 transition-transform duration-1000" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                             <span class="font-sans text-[10px] font-bold tracking-luxury text-gold uppercase block mb-3 relative z-10 group-hover:text-obsidian transition-colors">Прямая связь</span>
                             <span class="font-serif text-xl text-platinum group-hover:text-obsidian transition-colors relative z-10">Связаться в Telegram</span>
@@ -1393,7 +1384,6 @@
                         Ваш результат начинается с принятого решения.
                     </p>
                     <div class="w-16 h-[1px] bg-gold/40 mx-auto"></div>
-                    <!-- Task 9: Пульсация готовности (реверс подвала) -->
                     <p class="pulse-gold-reverse font-sans text-[10px] uppercase tracking-[0.4em] mt-6">Я жду тех, кто готов.</p>
                 </div>
             </div>
@@ -1514,7 +1504,7 @@
             setTimeout(() => { textEl.innerText = quotes[i]; textEl.style.opacity = 1; textEl.style.transform = 'translateY(0)'; }, 300); 
         }
 
-        // ХЕДЕР И ГОРИЗОНТАЛЬНЫЙ СКРОЛЛ И ПЛАВАЮЩАЯ КНОПКА (Task 5)
+        // ХЕДЕР И ГОРИЗОНТАЛЬНЫЙ СКРОЛЛ
         const header = document.getElementById('main-header');
         const bioSection = document.getElementById('biography');
         const bioTrack = document.getElementById('bio-track');
@@ -1540,7 +1530,6 @@
         let headerTimeout; let snapTimeout;
         let lastScrollY = window.scrollY;
 
-        // Task 3: Синхронизация плавающей кнопки CTA с появлением шапки меню
         function toggleHeaderAndCTA(hideHeader) {
             if (hideHeader && window.scrollY > 200) {
                 header.classList.add('scrolled-down'); header.classList.remove('scrolled-up');
@@ -1582,7 +1571,6 @@
             const scrollY = e.scroll;
             updateScrollVisibility(); 
 
-            // Горизонтальный скролл
             if (metrics.isDesktop && metrics.bioScrollDist > 0) {
                 const relativeScroll = scrollY - metrics.bioTop;
                 if (relativeScroll >= 0 && relativeScroll <= metrics.bioScrollDist) {
@@ -1671,7 +1659,7 @@
             }
         }
 
-        // --- Форма Манифеста (Task 1: Telegram Direct & Task 4: Dynamic ID) ---
+        // Форма Манифеста
         const formEl = document.getElementById('manifest-form');
         if (formEl) {
             formEl.addEventListener('submit', function(e) {
@@ -1680,14 +1668,12 @@
                 const goal = document.getElementById('goal').value;
                 const value = document.getElementById('value').value;
                 
-                // Task 4: Generate ID
                 const nameInitial = name.trim().charAt(0).toUpperCase() || 'X';
                 const today = new Date();
                 const dateStr = String(today.getDate()).padStart(2, '0') + String(today.getMonth() + 1).padStart(2, '0');
                 const randNum = Math.floor(1000 + Math.random() * 9000);
                 const uniqueId = `${nameInitial}-${dateStr}-${randNum}`;
                 
-                // Task 1: Telegram Logic
                 const manifestoText = `⚡️ ЗАЯВКА В КАСТУ\n\nID: ${uniqueId}\n\nI. ИМЯ И ОПЫТ:\n${name}\n\nII. ГЛАВНАЯ ЦЕЛЬ:\n${goal}\n\nIII. ПОЛЬЗА:\n${value}\n\n---\n#MarkovMafia`;
                 const telegramUrl = 'https://t.me/markovmade?text=' + encodeURIComponent(manifestoText);
                 
@@ -1701,7 +1687,6 @@
                     cardWrapper.classList.remove('hidden'); cardWrapper.classList.add('flex');
                 }, 700);
                 
-                // Set the button to open Telegram
                 document.getElementById('telegram-btn').onclick = function() { 
                     window.open(telegramUrl, '_blank'); 
                 };
@@ -1783,7 +1768,6 @@
             });
         });
 
-        // Функция анимации "Cyber Scan" (Task 2)
         window.runAnalysis = function(containerId, logicCallback) {
             if (containerId === 'calc-psycho') {
                 let isValid = true;
@@ -1826,7 +1810,7 @@
                 result.classList.remove('hidden'); result.classList.add('flex');
                 logicCallback();
                 setTimeout(updateLayoutMetrics, 100);
-            }, 1600); // 1.5 - 1.6 sec for scanning effect
+            }, 1600); 
         }
 
         function animateNumber(id, start, end, duration, isInt = false) {
@@ -1842,23 +1826,16 @@
             window.requestAnimationFrame(step);
         }
 
-        // --- Task 5: Helper function for Neon Buttons ---
+        // --- Вспомогательная функция для обновления кнопок через чистый CSS-класс ---
         function updateSomaButtons(selectorPrefix, selectedVal) {
             document.querySelectorAll(selectorPrefix).forEach(btn => {
-                // Убираем все возможные варианты свечения
-                btn.classList.remove(
-                    'border-[#0ea5e9]', 'text-[#0ea5e9]', 'shadow-[0_0_15px_rgba(14,165,233,0.4)]',
-                    'border-gold', 'text-gold', 'shadow-[0_0_15px_rgba(212,175,55,0.4)]',
-                    'border-[#ef4444]', 'text-[#ef4444]', 'shadow-[0_0_15px_rgba(239,68,68,0.4)]',
-                    'border-white/20', 'text-dim', 'active'
-                );
-                
+                btn.classList.remove('soma-ecto', 'soma-meso', 'soma-endo', 'border-white/20', 'text-dim', 'active');
                 const val = btn.getAttribute('data-val');
                 if (val === selectedVal) {
                     btn.classList.add('active');
-                    if (val === 'ecto') btn.classList.add('border-[#0ea5e9]', 'text-[#0ea5e9]', 'shadow-[0_0_15px_rgba(14,165,233,0.4)]');
-                    if (val === 'meso') btn.classList.add('border-gold', 'text-gold', 'shadow-[0_0_15px_rgba(212,175,55,0.4)]');
-                    if (val === 'endo') btn.classList.add('border-[#ef4444]', 'text-[#ef4444]', 'shadow-[0_0_15px_rgba(239,68,68,0.4)]');
+                    if (val === 'ecto') btn.classList.add('soma-ecto');
+                    if (val === 'meso') btn.classList.add('soma-meso');
+                    if (val === 'endo') btn.classList.add('soma-endo');
                 } else {
                     btn.classList.add('border-white/20', 'text-dim');
                 }
@@ -1871,7 +1848,7 @@
         document.querySelectorAll('.ffmi-gender').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.ffmi-gender').forEach(b => { 
-                    b.classList.remove('border-[#3b82f6]', 'text-[#3b82f6]', 'shadow-[0_0_15px_rgba(59,130,246,0.3)]', 'border-[#ec4899]', 'text-[#ec4899]', 'shadow-[0_0_15px_rgba(236,72,153,0.3)]');
+                    b.classList.remove('gender-male', 'gender-female', 'border-white/20', 'text-dim');
                     b.classList.add('border-white/20', 'text-dim'); 
                 });
                 
@@ -1879,9 +1856,9 @@
                 ffmiGender = btn.getAttribute('data-gender');
                 
                 if (ffmiGender === 'male') {
-                    btn.classList.add('border-[#3b82f6]', 'text-[#3b82f6]', 'shadow-[0_0_15px_rgba(59,130,246,0.3)]');
+                    btn.classList.add('gender-male');
                 } else {
-                    btn.classList.add('border-[#ec4899]', 'text-[#ec4899]', 'shadow-[0_0_15px_rgba(236,72,153,0.3)]');
+                    btn.classList.add('gender-female');
                 }
                 updateIfVisible('calc-fitness', calculateFFMI);
             });
@@ -1932,7 +1909,6 @@
             const offset = circumference - (percentage * circumference);
             circle.style.strokeDashoffset = circumference;
             
-            // Task 12: Visual marker
             const marker = document.getElementById('ffmi-marker');
             let markerPos = (normalizedFfmi / baseLimit) * 100;
             if(markerPos > 100) markerPos = 100;
@@ -2000,7 +1976,7 @@
         document.querySelectorAll('.nutri-gender').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.nutri-gender').forEach(b => { 
-                    b.classList.remove('border-[#3b82f6]', 'text-[#3b82f6]', 'shadow-[0_0_15px_rgba(59,130,246,0.3)]', 'border-[#ec4899]', 'text-[#ec4899]', 'shadow-[0_0_15px_rgba(236,72,153,0.3)]');
+                    b.classList.remove('gender-male', 'gender-female', 'border-white/20', 'text-dim');
                     b.classList.add('border-white/20', 'text-dim'); 
                 });
                 
@@ -2008,9 +1984,9 @@
                 nutriGender = btn.getAttribute('data-gender');
                 
                 if (nutriGender === 'male') {
-                    btn.classList.add('border-[#3b82f6]', 'text-[#3b82f6]', 'shadow-[0_0_15px_rgba(59,130,246,0.3)]');
+                    btn.classList.add('gender-male');
                 } else {
-                    btn.classList.add('border-[#ec4899]', 'text-[#ec4899]', 'shadow-[0_0_15px_rgba(236,72,153,0.3)]');
+                    btn.classList.add('gender-female');
                 }
                 updateIfVisible('calc-nutri', calculateNutri);
             });
@@ -2115,7 +2091,6 @@
             
             animateNumber("psycho-score", 0, percentage, 1200, true);
 
-            // Task 12: Visual marker for psycho
             const psychoMarker = document.getElementById('psycho-marker');
             setTimeout(() => {
                 psychoMarker.style.left = percentage + '%';
