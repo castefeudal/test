@@ -165,8 +165,10 @@
         /* 6. Отключаем мерцания и пульсации (перегружают ЦНС и заставляют зрачок дергаться) */
         body.theme-soft .animate-pulse,
         body.theme-soft .animate-ping,
+        body.theme-soft .animate-soft-ping,
         body.theme-soft .animate-data-flicker,
         body.theme-soft .pulse-gold-reverse,
+        body.theme-soft .animate-sync-text,
         body.theme-soft .footer-gold-sync-pulse,
         body.theme-soft .animate-scanline-horizontal {
             animation: none !important;
@@ -315,6 +317,16 @@
         @keyframes data-flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         .animate-data-flicker { animation: data-flicker 0.15s infinite; }
 
+        /* Синхронная пульсация текста в подвале */
+        .animate-sync-text {
+            color: rgb(var(--color-gold));
+            animation: syncTextPulse 4s ease-in-out infinite;
+        }
+        @keyframes syncTextPulse {
+            0%, 100% { opacity: 0.3; text-shadow: none; }
+            50% { opacity: 1; text-shadow: 0 0 15px rgba(var(--color-gold), 0.5); }
+        }
+
         /* Пульсация готовности */
         .pulse-gold-reverse {
             color: #B5B5B5; transition: all 0.5s ease;
@@ -323,6 +335,16 @@
         @keyframes pulseReverse {
             0%, 20% { opacity: 0.4; color: #B5B5B5; text-shadow: none; }
             80%, 100% { opacity: 1; color: rgb(var(--color-gold)); text-shadow: 0 0 25px rgba(var(--color-gold), 0.7); }
+        }
+
+        /* Мягкая пульсация плавающей кнопки */
+        .animate-soft-ping {
+            animation: softPing 4s ease-out infinite;
+        }
+        @keyframes softPing {
+            0% { transform: scale(1); opacity: 0.15; }
+            40% { transform: scale(1.4); opacity: 0; }
+            100% { transform: scale(1); opacity: 0; }
         }
 
         /* Таймлайн стили */
@@ -361,9 +383,9 @@
     <div id="cursor" class="custom-cursor"></div>
 
     <!-- Плавающая кнопка связи -->
-    <a href="https://t.me/markovmade?text=Здравствуйте!%20Готов%20работать%20над%20собой%20и%20изменить%20свою%20жизнь%20к%20лучшему!" target="_blank" id="floating-cta" class="interactive fixed bottom-8 right-6 md:right-10 z-[90] opacity-0 translate-y-10 pointer-events-none transition-all duration-500 ease-out group flex items-center justify-center">
-        <div class="absolute inset-0 rounded-full bg-gold/50 animate-ping opacity-30 group-hover:opacity-100"></div>
-        <div class="relative bg-obsidian border border-gold/50 text-gold rounded-full p-3 shadow-[0_0_20px_rgba(var(--color-gold),0.2)] group-hover:bg-gold group-hover:text-obsidian group-hover:shadow-[0_0_30px_rgba(var(--color-gold),0.6)] transition-all duration-300">
+    <a href="https://t.me/markovmade?text=Здравствуйте!%20Готов%20работать%20над%20собой%20и%20изменить%20свою%20жизнь%20к%20лучшему!" target="_blank" id="floating-cta" class="interactive fixed bottom-6 right-5 md:bottom-8 md:right-10 z-[90] opacity-0 translate-y-10 pointer-events-none transition-all duration-500 ease-out group flex items-center justify-center">
+        <div class="absolute inset-0 rounded-full bg-gold animate-soft-ping"></div>
+        <div class="relative bg-obsidian border border-gold/40 text-gold rounded-full p-2.5 md:p-3 shadow-[0_0_15px_rgba(var(--color-gold),0.2)] group-hover:bg-gold group-hover:text-obsidian transition-all duration-300">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
         </div>
     </a>
@@ -389,9 +411,9 @@
     </div>
 
     <!-- HEADER -->
-    <header id="main-header" class="fixed top-0 left-0 w-full z-50 pt-4 pb-2 md:pt-6 md:pb-1 px-6 md:px-12 transition-all duration-300 border-b border-gold/30">
+    <header id="main-header" class="fixed top-0 left-0 w-full z-50 py-3 md:pt-6 md:pb-1 px-5 md:px-12 transition-all duration-300 border-b border-gold/30">
         <div class="container mx-auto flex justify-between items-center relative">
-            <a href="#hero" class="interactive relative z-[60] flex items-center h-12 md:h-20">
+            <a href="#hero" class="interactive relative z-[60] flex items-center h-9 md:h-20">
                 <img src="https://i.ibb.co/XZ2H1ctf/IMG-5845.png" alt="MARKOVMADE" class="h-full w-auto object-contain drop-shadow-[0_0_15px_rgba(var(--color-gold),0.2)] transition-transform duration-500 hover:scale-105">
             </a>
             
@@ -423,7 +445,7 @@
                 </div>
             </nav>
 
-            <div class="flex items-center gap-6 md:hidden relative z-[60]">
+            <div class="flex items-center gap-4 md:hidden relative z-[60]">
                 <!-- Кнопка смены темы для Мобильных -->
                 <button onclick="toggleTheme()" class="interactive text-dim hover:text-gold transition-colors" title="Смена контраста">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -431,9 +453,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                 </button>
-                <button id="burger-btn" class="interactive relative w-10 h-10 flex flex-col justify-center items-end gap-1.5 group" onclick="toggleMenu()" aria-label="Menu">
-                    <span class="w-8 h-[1px] bg-platinum transition-all group-hover:w-6 group-hover:bg-gold"></span>
-                    <span class="w-6 h-[1px] bg-platinum transition-all group-hover:w-8 group-hover:bg-gold"></span>
+                <button id="burger-btn" class="interactive relative w-8 h-8 flex flex-col justify-center items-end gap-[5px] group" onclick="toggleMenu()" aria-label="Menu">
+                    <span class="w-6 h-[1px] bg-platinum transition-all group-hover:w-4 group-hover:bg-gold"></span>
+                    <span class="w-4 h-[1px] bg-platinum transition-all group-hover:w-6 group-hover:bg-gold"></span>
                 </button>
             </div>
         </div>
@@ -1460,7 +1482,7 @@
 
                 <div class="relative max-w-5xl mx-auto fade-in-up mb-32">
                     <div class="tooltip-hint absolute -top-14 left-1/2 -translate-x-1/2 text-center w-full">
-                        <span class="font-sans text-[9px] text-gold tracking-luxury uppercase animate-pulse">Ваше время стоит дорого. Действуйте.</span>
+                        <span class="font-sans text-[10px] tracking-luxury uppercase animate-sync-text">Ваше время стоит дорого. Действуйте.</span>
                     </div>
 
                     <div class="flex flex-col md:flex-row justify-center gap-6">
@@ -1489,7 +1511,7 @@
                         Ваш результат начинается с принятого решения.
                     </p>
                     <div class="w-16 h-[1px] bg-gold/40 mx-auto"></div>
-                    <p class="pulse-gold-reverse font-sans text-[10px] uppercase tracking-[0.4em] mt-6">Я жду тех, кто готов.</p>
+                    <p class="animate-sync-text font-sans text-[10px] uppercase tracking-[0.4em] mt-6">Я жду тех, кто готов.</p>
                 </div>
             </div>
         </section>
