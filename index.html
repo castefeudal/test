@@ -17,14 +17,14 @@
     <meta property="og:url" content="https://markovmade.com"> 
     <meta property="og:title" content="MARKOVMADE | Архитектура Личности и Менторство">
     <meta property="og:description" content="Не просто спорт. Пересборка личности, здоровья и мышления. Твой путь в MARKOVMAFIA начинается здесь. Оцифруй свои результаты прямо сейчас.">
-    <meta property="og:image" content="https://i.ibb.co/svzfjY90/image.png"> 
+    <meta property="og:image" content="https://i.ibb.co/JWKdKphb/preview.png"> 
     <meta property="og:locale" content="ru_RU">
     <meta property="og:site_name" content="MARKOVMADE">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="MARKOVMADE: Перепрошивка тела и разума на уровне биохимии">
     <meta name="twitter:description" content="Авторская методика Павла Маркова. Управляй гормонами, мышлением и энергией, чтобы создать лучшую версию себя.">
-    <meta name="twitter:image" content="https://i.ibb.co/svzfjY90/image.png">
+    <meta name="twitter:image" content="https://i.ibb.co/JWKdKphb/preview.png">
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23D4AF37%22/></svg>">
     <link rel="apple-touch-icon" href="https://i.ibb.co/XZ2H1ctf/IMG-5845.png"> 
@@ -350,15 +350,15 @@
     </header>
 
     <!-- MOBILE MENU -->
-    <div id="mobile-menu" class="fixed inset-0 z-[55] bg-obsidian flex flex-col justify-start px-6 transform translate-x-full transition-transform duration-700 cubic-bezier(0.7,0,0.3,1) overflow-y-auto">
-        <nav class="flex flex-col gap-8 min-h-min pt-32 pb-16">
-            <a href="#about" class="interactive font-serif text-4xl text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">Обо мне</a>
-            <a href="#principles" class="interactive font-serif text-4xl text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">Принципы</a>
-            <a href="#biography" class="interactive font-serif text-4xl text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">История</a>
-            <a href="#services" class="interactive font-serif text-4xl text-gold transition-colors block" onclick="toggleMenu()">Услуги</a>
-            <a href="#team" class="interactive font-serif text-4xl text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">Команда</a>
-            <a href="#calculators" class="interactive font-serif text-4xl text-platinum drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-colors block" onclick="toggleMenu()">Расчёт</a>
-            <a href="#contact" class="interactive font-serif text-4xl text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">Контакты</a>
+    <div id="mobile-menu" class="fixed inset-0 z-[55] bg-obsidian flex flex-col justify-center px-6 transform translate-x-full transition-transform duration-700 cubic-bezier(0.7,0,0.3,1) overflow-y-auto">
+        <nav class="flex flex-col items-center gap-8 min-h-min py-16">
+            <a href="#about" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">I. Обо мне</a>
+            <a href="#principles" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">II. Принципы</a>
+            <a href="#biography" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">III. История</a>
+            <a href="#services" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-gold transition-colors block" onclick="toggleMenu()">IV. Услуги</a>
+            <a href="#team" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">V. Команда</a>
+            <a href="#calculators" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-platinum drop-shadow-[0_0_10px_rgba(255,255,255,0.1)] transition-colors block" onclick="toggleMenu()">VI. Расчёт</a>
+            <a href="#contact" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">VII. Контакты</a>
         </nav>
     </div>
 
@@ -1489,15 +1489,31 @@
         window.addEventListener('resize', updateLayoutMetrics);
 
         let headerTimeout; let snapTimeout;
-        lenis.on('scroll', (e) => {
-            const scrollY = e.scroll; const velocity = e.velocity;
-            // Хедер
-            if (scrollY > 50) {
-                if (velocity < 0) {
+        let lastScrollY = window.scrollY;
+
+        function updateHeaderVisibility() {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > 50) {
+                if (currentScrollY < lastScrollY - 2) { 
+                    // Скролл ВВЕРХ - показываем шапку
                     header.classList.remove('scrolled-down'); header.classList.add('scrolled-up'); clearTimeout(headerTimeout);
-                    headerTimeout = setTimeout(() => { if (window.scrollY > 50) { header.classList.add('scrolled-down'); header.classList.remove('scrolled-up'); } }, 3000);
-                } else if (velocity > 0) { header.classList.add('scrolled-down'); header.classList.remove('scrolled-up'); clearTimeout(headerTimeout); }
+                    headerTimeout = setTimeout(() => { if (window.scrollY > 50 && !document.body.classList.contains('menu-open')) { header.classList.add('scrolled-down'); header.classList.remove('scrolled-up'); } }, 3000);
+                } else if (currentScrollY > lastScrollY + 2) { 
+                    // Скролл ВНИЗ - прячем шапку
+                    if (!document.body.classList.contains('menu-open')) {
+                        header.classList.add('scrolled-down'); header.classList.remove('scrolled-up'); clearTimeout(headerTimeout);
+                    }
+                }
             } else { header.classList.remove('scrolled-down'); header.classList.add('scrolled-up'); }
+            lastScrollY = currentScrollY;
+        }
+
+        // Подключаем к нативному скроллу для мобильных устройств
+        window.addEventListener('scroll', updateHeaderVisibility, { passive: true });
+
+        lenis.on('scroll', (e) => {
+            const scrollY = e.scroll;
+            updateHeaderVisibility(); // Для десктопного плавного скролла
 
             // Горизонтальный скролл
             if (metrics.isDesktop && metrics.bioScrollDist > 0) {
