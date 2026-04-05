@@ -80,7 +80,9 @@
                         obsidian: 'rgb(var(--bg-obsidian) / <alpha-value>)', 
                         charcoal: 'rgb(var(--bg-charcoal) / <alpha-value>)', 
                         platinum: 'rgb(var(--text-platinum) / <alpha-value>)',
-                        dim: '#B5B5B5', gold: '#D4AF37', goldlight: '#F4CF57',
+                        dim: '#B5B5B5', 
+                        gold: 'rgb(var(--color-gold) / <alpha-value>)', /* Динамическое золото */
+                        goldlight: '#F4CF57',
                     },
                     fontFamily: { sans: ['Manrope', 'sans-serif'], serif: ['Playfair Display', 'serif'], },
                     letterSpacing: { luxury: '0.2em', },
@@ -102,61 +104,85 @@
     </script>
 
     <style>
-        /* === ПЕРЕМЕННЫЕ ЦВЕТА (ДЛЯ СМЕНЫ ТЕМ) === */
+        /* === ПЕРЕМЕННЫЕ ЦВЕТА === */
         :root {
             --bg-obsidian: 5 5 5;         /* #050505 - Deep Black */
             --bg-charcoal: 15 15 15;      /* #0F0F0F */
             --text-platinum: 242 242 242; /* #F2F2F2 */
+            --color-gold: 212 175 55;     /* #D4AF37 */
         }
 
-        /* 10/10 ОПТИМИЗАЦИЯ ДЛЯ АСТИГМАТИЗМА И УСТАЛОГО ЗРЕНИЯ */
+        /* === 10/10 ОПТИМИЗАЦИЯ ДЛЯ АСТИГМАТИЗМА И УСТАЛОГО ЗРЕНИЯ === */
         body.theme-soft {
-            --bg-obsidian: 30 30 30;      /* #1E1E1E - Эталонный серый (Material Design) */
-            --bg-charcoal: 40 40 40;      /* #282828 */
-            --text-platinum: 215 215 215; /* #D7D7D7 - Матовый белый, снимает ореол (Halation Effect) */
+            --bg-obsidian: 38 38 38;      /* #262626 - Эталонный мягкий серый (снимает контрастный стресс) */
+            --bg-charcoal: 48 48 48;      /* #303030 */
+            --text-platinum: 200 200 200; /* #C8C8C8 - Матовый серый вместо слепящего белого (Halation Effect KILLER) */
+            --color-gold: 191 155 48;     /* #BF9B30 - Приглушенное матовое золото */
             
-            /* Уплотняем шрифт. Сверхтонкие линии на темном фоне размываются при астигматизме */
             -webkit-font-smoothing: subpixel-antialiased;
             -moz-osx-font-smoothing: auto;
         }
 
-        /* Главный враг астигматизма - эффект "Гало" (Halation).
-           Светящиеся тени вокруг объектов и текста заставляют хрусталик напрягаться.
-           Мы заменяем "неоновое свечение" на "матовую бумагу".
-        */
+        /* 1. Убиваем ВСЕ неоновые свечения и тени текста (главный враг при астигматизме) */
+        body.theme-soft * {
+            text-shadow: none !important;
+        }
+
+        /* 2. Превращаем светящиеся border-тени в плоские, спокойные дроп-тени */
+        body.theme-soft [class*="shadow-\\[0_0_"],
+        body.theme-soft [class*="drop-shadow"] {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25) !important; 
+            filter: none !important;
+        }
+
         body.theme-soft .menu-highlight-gold,
         body.theme-soft .menu-highlight-platinum {
-            text-shadow: none !important;
-            border-bottom-color: rgba(212, 175, 55, 0.4) !important;
+            border-bottom-color: rgba(191, 155, 48, 0.4) !important;
         }
 
-        body.theme-soft .pulse-gold-reverse,
-        body.theme-soft .footer-gold-sync-pulse {
-            text-shadow: none !important;
-            animation: none !important; /* Пульсация текста сильно бьет по глазам при усталости */
-            opacity: 0.8 !important;
-            color: #D4AF37 !important;
+        /* 3. Утолщаем шрифты. Сверхтонкие линии на темном фоне размываются */
+        body.theme-soft .font-thin,
+        body.theme-soft .font-light {
+            font-weight: 400 !important;
         }
 
-        body.theme-soft [class*="shadow-\\[0_0_"] {
-            /* Тень уходит вниз, а не светится неоном вокруг кнопки */
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4) !important; 
+        /* 4. Даем тексту дышать (снижает усталость при фокусировке) */
+        body.theme-soft p,
+        body.theme-soft li,
+        body.theme-soft .insight-ghost p {
+            line-height: 1.8 !important;
+            letter-spacing: 0.02em !important;
         }
 
-        body.theme-soft [class*="drop-shadow-"] {
-            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5)) !important;
+        /* 5. Убираем визуальный мусор: шум, абстрактные пятна, которые заставляют глаз искать фокус */
+        body.theme-soft .noise-overlay,
+        body.theme-soft .bg-noise,
+        body.theme-soft [class*="blur-\\[180px\\]"],
+        body.theme-soft [class*="blur-\\[160px\\]"] {
+            display: none !important;
         }
-        
-        /* Успокаиваем анимации, которые перегружают ЦНС при долгом чтении */
+
+        /* 6. Отключаем мерцания и пульсации (перегружают ЦНС и заставляют зрачок дергаться) */
         body.theme-soft .animate-pulse,
-        body.theme-soft .animate-ping {
-            animation-duration: 4s !important;
-            opacity: 0.3 !important;
+        body.theme-soft .animate-ping,
+        body.theme-soft .animate-data-flicker,
+        body.theme-soft .pulse-gold-reverse,
+        body.theme-soft .footer-gold-sync-pulse,
+        body.theme-soft .animate-scanline-horizontal {
+            animation: none !important;
+            display: block !important; 
+            opacity: 0.9 !important;
         }
-        
-        /* Класс для плавного переключения темы */
+        body.theme-soft .animate-scanline-horizontal { display: none !important; }
+
+        /* 7. Смягчаем резкий контраст фотографий */
+        body.theme-soft img {
+            filter: contrast(85%) brightness(90%) !important;
+        }
+
+        /* === Класс для плавного переключения темы === */
         .theme-transition, .theme-transition * {
-            transition: background-color 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease, text-shadow 0.4s ease, color 0.4s ease !important;
+            transition: background-color 0.5s ease, box-shadow 0.5s ease, filter 0.5s ease, text-shadow 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;
         }
 
         /* === GLOBAL RESET & BASE === */
@@ -184,7 +210,7 @@
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: rgb(var(--bg-obsidian)); }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
-        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+        ::-webkit-scrollbar-thumb:hover { background: rgb(var(--color-gold)); }
 
         /* Cursor */
         .custom-cursor {
@@ -192,14 +218,14 @@
             background-color: rgb(var(--text-platinum)); border-radius: 50%; pointer-events: none; z-index: 99999;
             transform: translate(-50%, -50%); transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border 0.3s ease; mix-blend-mode: exclusion;
         }
-        .custom-cursor.hovered { width: 60px; height: 60px; background-color: transparent; border: 1px solid #D4AF37; mix-blend-mode: normal; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+        .custom-cursor.hovered { width: 60px; height: 60px; background-color: transparent; border: 1px solid rgb(var(--color-gold)); mix-blend-mode: normal; box-shadow: 0 0 20px rgba(var(--color-gold), 0.2); }
 
         /* UI Animations */
         header { transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s; }
         header.scrolled-down { transform: translateY(-100%); }
         header.scrolled-up { transform: translateY(0); background-color: rgb(var(--bg-obsidian) / 0.9); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.03); }
 
-        .nav-link::after { content: ''; position: absolute; width: 0; height: 1px; bottom: -6px; left: 0; background-color: #D4AF37; transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 1px; bottom: -6px; left: 0; background-color: rgb(var(--color-gold)); transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
         .nav-link:hover::after { width: 100%; }
 
         .reveal-text { transform: translateY(120%); opacity: 0; transition: all 1.4s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -211,7 +237,7 @@
         .insight-ghost {
             position: fixed; bottom: 40px; right: 40px; max-width: 320px; 
             background: rgb(var(--bg-charcoal) / 0.6); backdrop-filter: blur(16px); 
-            border-left: 1px solid rgba(212, 175, 55, 0.8); 
+            border-left: 1px solid rgba(var(--color-gold), 0.8); 
             padding: 24px 36px; border-radius: 2px; z-index: 9999; pointer-events: none;
             opacity: 0; filter: blur(15px); transform: translateY(30px) scale(0.98); 
             transition: opacity 1.8s cubic-bezier(0.19, 1, 0.22, 1), transform 1.8s cubic-bezier(0.19, 1, 0.22, 1), filter 1.8s cubic-bezier(0.19, 1, 0.22, 1);
@@ -235,14 +261,14 @@
             color: rgb(var(--text-platinum)); padding: 1.5rem 0; width: 100%; outline: none; transition: border-color 0.4s ease;
             font-family: 'Manrope', sans-serif; font-size: 1.1rem; border-radius: 0;
         }
-        .manifest-input:focus { border-bottom-color: #D4AF37; }
+        .manifest-input:focus { border-bottom-color: rgb(var(--color-gold)); }
         .manifest-input::placeholder { color: #666; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; }
         
         .contact-btn {
             background-color: rgb(var(--bg-obsidian) / 0.5); border: 1px solid rgba(255,255,255,0.1); color: #B5B5B5;
             transition: all 0.4s ease; position: relative; overflow: hidden; backdrop-filter: blur(5px);
         }
-        .contact-btn:hover { color: #fff; border-color: #D4AF37; transform: translateY(-2px); }
+        .contact-btn:hover { color: #fff; border-color: rgb(var(--color-gold)); transform: translateY(-2px); }
         .glass-panel { background: rgba(255, 255, 255, 0.015); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
 
         .service-badge {
@@ -254,11 +280,11 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; opacity: 0.03;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
-        ::selection { background: #D4AF37; color: rgb(var(--bg-obsidian)); }
+        ::selection { background: rgb(var(--color-gold)); color: rgb(var(--bg-obsidian)); }
 
         /* === СТИЛИ РАЗДЕЛА РАСЧЁТОВ И МЕНЮ === */
         .menu-highlight-gold {
-            color: #D4AF37 !important; border-bottom: 2px solid rgba(212,175,55,0.8) !important; text-shadow: 0 0 15px rgba(212,175,55,0.6);
+            color: rgb(var(--color-gold)) !important; border-bottom: 2px solid rgba(var(--color-gold), 0.8) !important; text-shadow: 0 0 15px rgba(var(--color-gold), 0.6);
         }
         .menu-highlight-platinum {
             color: rgb(var(--text-platinum)) !important; border-bottom: 2px solid rgba(242,242,242,0.8) !important; text-shadow: 0 0 15px rgba(242,242,242,0.6);
@@ -268,13 +294,13 @@
         input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
         .luxury-input-number {
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-bottom: 2px solid rgba(212, 175, 55, 0.4);
-            color: #D4AF37; font-family: 'Playfair Display', serif; font-size: 1.5rem;
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-bottom: 2px solid rgba(var(--color-gold), 0.4);
+            color: rgb(var(--color-gold)); font-family: 'Playfair Display', serif; font-size: 1.5rem;
             text-align: center; width: 100%; padding: 0.75rem; outline: none; border-radius: 4px; transition: all 0.3s ease;
         }
         .luxury-input-number:focus {
-            border-bottom-color: #F4CF57; background: rgba(212, 175, 55, 0.05);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.1); text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+            border-bottom-color: rgb(var(--color-gold)); background: rgba(var(--color-gold), 0.05);
+            box-shadow: 0 5px 15px rgba(var(--color-gold), 0.1); text-shadow: 0 0 10px rgba(var(--color-gold), 0.4);
         }
         .custom-select {
             appearance: none; padding-right: 2.5rem;
@@ -296,16 +322,16 @@
         }
         @keyframes pulseReverse {
             0%, 20% { opacity: 0.4; color: #B5B5B5; text-shadow: none; }
-            80%, 100% { opacity: 1; color: #D4AF37; text-shadow: 0 0 25px rgba(212,175,55,0.7); }
+            80%, 100% { opacity: 1; color: rgb(var(--color-gold)); text-shadow: 0 0 25px rgba(var(--color-gold), 0.7); }
         }
 
         /* Таймлайн стили */
         .timeline-nav { transition: all 0.3s ease; }
-        .timeline-nav.active { color: #D4AF37; border-bottom-color: #D4AF37; }
+        .timeline-nav.active { color: rgb(var(--color-gold)); border-bottom-color: rgb(var(--color-gold)); }
 
         /* === ФИКС ЦВЕТОВ КНОПОК РАСЧЕТА === */
         .soma-ecto { border-color: #0ea5e9 !important; color: #0ea5e9 !important; box-shadow: 0 0 15px rgba(14,165,233,0.4) !important; }
-        .soma-meso { border-color: #D4AF37 !important; color: #D4AF37 !important; box-shadow: 0 0 15px rgba(212,175,55,0.4) !important; }
+        .soma-meso { border-color: rgb(var(--color-gold)) !important; color: rgb(var(--color-gold)) !important; box-shadow: 0 0 15px rgba(var(--color-gold),0.4) !important; }
         .soma-endo { border-color: #ef4444 !important; color: #ef4444 !important; box-shadow: 0 0 15px rgba(239,68,68,0.4) !important; }
         
         .gender-male { border-color: #3b82f6 !important; color: #3b82f6 !important; box-shadow: 0 0 15px rgba(59,130,246,0.3) !important; }
@@ -337,7 +363,7 @@
     <!-- Плавающая кнопка связи -->
     <a href="https://t.me/markovmade?text=Здравствуйте!%20Готов%20работать%20над%20собой%20и%20изменить%20свою%20жизнь%20к%20лучшему!" target="_blank" id="floating-cta" class="interactive fixed bottom-8 right-6 md:right-10 z-[90] opacity-0 translate-y-10 pointer-events-none transition-all duration-500 ease-out group flex items-center justify-center">
         <div class="absolute inset-0 rounded-full bg-gold/50 animate-ping opacity-30 group-hover:opacity-100"></div>
-        <div class="relative bg-obsidian border border-gold/50 text-gold rounded-full p-3 shadow-[0_0_20px_rgba(212,175,55,0.2)] group-hover:bg-gold group-hover:text-obsidian group-hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-300">
+        <div class="relative bg-obsidian border border-gold/50 text-gold rounded-full p-3 shadow-[0_0_20px_rgba(var(--color-gold),0.2)] group-hover:bg-gold group-hover:text-obsidian group-hover:shadow-[0_0_30px_rgba(var(--color-gold),0.6)] transition-all duration-300">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
         </div>
     </a>
@@ -353,7 +379,7 @@
             <span>От души, душевно</span><span>В ДУШУ</span>
         </div>
         <div class="overflow-hidden h-32 flex items-center justify-center w-full relative">
-            <p id="preloader-text" class="font-serif text-3xl md:text-5xl italic text-platinum text-center absolute transition-all duration-700 transform translate-y-0 opacity-100 drop-shadow-[0_0_20px_rgba(212,175,55,0.8)]">
+            <p id="preloader-text" class="font-serif text-3xl md:text-5xl italic text-platinum text-center absolute transition-all duration-700 transform translate-y-0 opacity-100 drop-shadow-[0_0_20px_rgba(var(--color-gold),0.8)]">
                 Я тут. Сейчас. С Вами.
             </p>
         </div>
@@ -366,7 +392,7 @@
     <header id="main-header" class="fixed top-0 left-0 w-full z-50 pt-4 pb-2 md:pt-6 md:pb-1 px-6 md:px-12 transition-all duration-300 border-b border-gold/30">
         <div class="container mx-auto flex justify-between items-center relative">
             <a href="#hero" class="interactive relative z-[60] flex items-center h-12 md:h-20">
-                <img src="https://i.ibb.co/XZ2H1ctf/IMG-5845.png" alt="MARKOVMADE" class="h-full w-auto object-contain drop-shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-transform duration-500 hover:scale-105">
+                <img src="https://i.ibb.co/XZ2H1ctf/IMG-5845.png" alt="MARKOVMADE" class="h-full w-auto object-contain drop-shadow-[0_0_15px_rgba(var(--color-gold),0.2)] transition-transform duration-500 hover:scale-105">
             </a>
             
             <nav class="hidden md:flex gap-8 lg:gap-10 items-center">
@@ -385,7 +411,7 @@
                         </svg>
                     </button>
                     
-                    <a href="#contact" class="interactive group relative px-6 py-2 border border-gold/30 rounded-sm text-[10px] font-sans tracking-luxury uppercase text-platinum overflow-hidden transition-all duration-500 hover:shadow-[0_0_25px_rgba(212,175,55,0.3)]">
+                    <a href="#contact" class="interactive group relative px-6 py-2 border border-gold/30 rounded-sm text-[10px] font-sans tracking-luxury uppercase text-platinum overflow-hidden transition-all duration-500 hover:shadow-[0_0_25px_rgba(var(--color-gold),0.3)]">
                         <span class="absolute inset-0 bg-gold translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out -z-10"></span>
                         <span class="relative z-10 flex items-center gap-2 group-hover:text-obsidian transition-colors duration-500">
                             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -442,7 +468,7 @@
                     </p>
                     <div class="mt-12 flex flex-col items-start gap-4">
                         <a href="#services" class="relative inline-flex overflow-hidden rounded-sm p-[2px] group interactive">
-                            <span class="absolute inset-[-1000%] animate-spin-slow bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,#D4AF37_50%,transparent_100%)]"></span>
+                            <span class="absolute inset-[-1000%] animate-spin-slow bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,rgba(var(--color-gold))_50%,transparent_100%)]"></span>
                             <span class="relative inline-flex h-full w-full items-center justify-center bg-obsidian px-10 py-4 text-xs font-sans font-bold tracking-luxury uppercase text-platinum transition-all group-hover:bg-gold group-hover:text-obsidian">
                                 Начать трансформацию
                             </span>
@@ -500,7 +526,7 @@
                         </div>
 
                         <div class="fade-in-up mt-14" style="transition-delay: 300ms;">
-                            <a href="#services" class="interactive group relative inline-flex items-center justify-center gap-4 px-10 py-4 border border-gold/50 rounded-sm text-xs font-sans font-bold tracking-luxury uppercase text-platinum transition-all duration-500 hover:bg-gold hover:border-gold hover:text-obsidian hover:shadow-[0_0_30px_rgba(212,175,55,0.2)]">
+                            <a href="#services" class="interactive group relative inline-flex items-center justify-center gap-4 px-10 py-4 border border-gold/50 rounded-sm text-xs font-sans font-bold tracking-luxury uppercase text-platinum transition-all duration-500 hover:bg-gold hover:border-gold hover:text-obsidian hover:shadow-[0_0_30px_rgba(var(--color-gold),0.2)]">
                                 <span class="relative z-10">Начать свою историю</span>
                                 <svg class="relative z-10 w-4 h-4 transition-transform duration-500 group-hover:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
@@ -794,7 +820,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="#contact" class="w-max self-start inline-block mt-4 bg-transparent text-[#D4AF37] px-8 py-4 font-sans font-black uppercase text-[10px] tracking-[0.25em] border border-[#D4AF37] hover:bg-[#D4AF37] hover:text-obsidian hover:border-[#D4AF37] transition-all duration-500 transform hover:-translate-y-1">Начать трансформацию</a>
+                                    <a href="#contact" class="w-max self-start inline-block mt-4 bg-transparent text-gold px-8 py-4 font-sans font-black uppercase text-[10px] tracking-[0.25em] border border-gold hover:bg-gold hover:text-obsidian hover:border-gold transition-all duration-500 transform hover:-translate-y-1">Начать трансформацию</a>
                                 </div>
                             </div>
                         </div>
@@ -842,7 +868,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="#contact" class="w-max self-start inline-block mt-4 bg-transparent text-[#D4AF37] px-8 py-4 font-sans font-black uppercase text-[10px] tracking-[0.25em] border border-[#D4AF37] hover:bg-[#D4AF37] hover:text-obsidian hover:border-[#D4AF37] transition-all duration-500 transform hover:-translate-y-1">Вернуть себе - себя</a>
+                                    <a href="#contact" class="w-max self-start inline-block mt-4 bg-transparent text-gold px-8 py-4 font-sans font-black uppercase text-[10px] tracking-[0.25em] border border-gold hover:bg-gold hover:text-obsidian hover:border-gold transition-all duration-500 transform hover:-translate-y-1">Вернуть себе - себя</a>
                                 </div>
                             </div>
                         </div>
@@ -890,7 +916,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="#contact" class="w-max self-start inline-block mt-4 bg-transparent text-[#D4AF37] px-8 py-4 font-sans font-black uppercase text-[10px] tracking-[0.25em] border border-[#D4AF37] hover:bg-[#D4AF37] hover:text-obsidian hover:border-[#D4AF37] transition-all duration-500 transform hover:-translate-y-1">Получить инструкцию к своему телу</a>
+                                    <a href="#contact" class="w-max self-start inline-block mt-4 bg-transparent text-gold px-8 py-4 font-sans font-black uppercase text-[10px] tracking-[0.25em] border border-gold hover:bg-gold hover:text-obsidian hover:border-gold transition-all duration-500 transform hover:-translate-y-1">Получить инструкцию к своему телу</a>
                                 </div>
                             </div>
                         </div>
@@ -947,7 +973,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="#contact" class="w-max self-start inline-block mt-4 bg-transparent text-[#D4AF37] px-8 py-4 font-sans font-black uppercase text-[10px] tracking-[0.25em] border border-[#D4AF37] hover:bg-[#D4AF37] hover:text-obsidian hover:border-[#D4AF37] transition-all duration-500 transform hover:-translate-y-1">Измениться к лучшему</a>
+                                    <a href="#contact" class="w-max self-start inline-block mt-4 bg-transparent text-gold px-8 py-4 font-sans font-black uppercase text-[10px] tracking-[0.25em] border border-gold hover:bg-gold hover:text-obsidian hover:border-gold transition-all duration-500 transform hover:-translate-y-1">Измениться к лучшему</a>
                                 </div>
                             </div>
                         </div>
@@ -960,7 +986,7 @@
         <!-- TEAM SECTION -->
         <section id="team" class="section-block relative py-20 bg-obsidian overflow-hidden" data-insight="Сила в окружении. Результат в дисциплине.">
             <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/20 to-transparent"></div>
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(212,175,55,0.03),_transparent_70%)] pointer-events-none transition-colors duration-500"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(var(--color-gold),0.03),_transparent_70%)] pointer-events-none transition-colors duration-500"></div>
 
             <div class="container mx-auto px-6 md:px-12 relative z-10">
                 <div class="text-center max-w-3xl mx-auto mb-16 fade-in-up">
@@ -1011,7 +1037,7 @@
                             <div class="absolute bottom-0 left-0 w-full h-[1px] input-underline"></div>
                         </div>
                         <div class="pt-6 text-center">
-                            <button type="submit" class="interactive group relative px-20 py-6 border border-gold/40 text-gold font-sans text-xs font-bold tracking-[0.4em] uppercase overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_rgba(212,175,55,0.2)]">
+                            <button type="submit" class="interactive group relative px-20 py-6 border border-gold/40 text-gold font-sans text-xs font-bold tracking-[0.4em] uppercase overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_rgba(var(--color-gold),0.2)]">
                                 <span class="relative z-10 group-hover:text-obsidian transition-colors duration-500">Сформировать</span>
                                 <div class="absolute inset-0 bg-gold translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[0.16,1,0.3,1]"></div>
                             </button>
@@ -1049,7 +1075,7 @@
 
         <!-- === СЕКЦИЯ РАСЧЁТОВ (ИНСТРУМЕНТЫ) === -->
         <section id="calculators" class="section-block relative py-24 md:py-32 bg-charcoal/50 border-t border-white/5 overflow-hidden transition-colors duration-500" data-insight="Точные данные бьют любые мотивационные речи.">
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,_rgba(212,175,55,0.02),_transparent_60%)] pointer-events-none"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,_rgba(var(--color-gold),0.02),_transparent_60%)] pointer-events-none"></div>
             <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-white rounded-full blur-[160px] opacity-[0.01] pointer-events-none"></div>
 
             <div class="container mx-auto px-6 md:px-12 relative z-10">
@@ -1155,9 +1181,9 @@
 
                                 <div id="calc-fitness-result" class="hidden flex-col justify-center h-full relative z-10 w-full">
                                     <div class="relative w-40 h-40 mx-auto mb-6">
-                                        <svg class="w-full h-full transform -rotate-90 drop-shadow-[0_0_15px_rgba(212,175,55,0.3)]" viewBox="0 0 100 100">
+                                        <svg class="w-full h-full transform -rotate-90 drop-shadow-[0_0_15px_rgba(var(--color-gold),0.3)]" viewBox="0 0 100 100">
                                             <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.05)" stroke-width="6" fill="none"></circle>
-                                            <circle id="ffmi-svg-bar" cx="50" cy="50" r="40" stroke="#D4AF37" stroke-width="6" fill="none" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" class="transition-all duration-[1.5s] ease-out"></circle>
+                                            <circle id="ffmi-svg-bar" cx="50" cy="50" r="40" stroke="rgb(var(--color-gold))" stroke-width="6" fill="none" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" class="transition-all duration-[1.5s] ease-out"></circle>
                                         </svg>
                                         <div class="absolute inset-0 flex flex-col items-center justify-center pt-2">
                                             <span id="ffmi-score" class="text-4xl font-serif text-platinum leading-none">0.0</span>
@@ -1247,7 +1273,7 @@
                                 <div>
                                     <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase block mb-3 text-center">Биохимическая Цель</label>
                                     <div class="flex gap-2">
-                                        <button class="nutri-goal active flex-1 py-3 border border-gold text-gold shadow-[0_0_15px_rgba(212,175,55,0.4)] text-[10px] tracking-widest uppercase rounded-sm transition-all" data-goal="cut">Рельеф (-20%)</button>
+                                        <button class="nutri-goal active flex-1 py-3 border border-gold text-gold shadow-[0_0_15px_rgba(var(--color-gold),0.4)] text-[10px] tracking-widest uppercase rounded-sm transition-all" data-goal="cut">Рельеф (-20%)</button>
                                         <button class="nutri-goal flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-goal="maintain">Баланс (0%)</button>
                                         <button class="nutri-goal flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-goal="bulk">Масса (+15%)</button>
                                     </div>
@@ -1286,7 +1312,7 @@
                                         </div>
                                         <div class="flex flex-col items-center gap-2 group w-16">
                                             <div class="w-12 bg-white/5 relative h-full rounded-sm overflow-hidden border border-gold/20 group-hover:border-gold transition-colors">
-                                                <div id="bar-f" class="absolute bottom-0 w-full bg-gold transition-all duration-[1.5s] ease-out h-0 shadow-[0_0_10px_rgba(212,175,55,0.4)]"></div>
+                                                <div id="bar-f" class="absolute bottom-0 w-full bg-gold transition-all duration-[1.5s] ease-out h-0 shadow-[0_0_10px_rgba(var(--color-gold),0.4)]"></div>
                                             </div>
                                             <span class="font-serif text-gold text-xl leading-none mt-2" id="nutri-f">0г</span>
                                             <span class="text-[9px] text-gold tracking-widest uppercase text-center leading-tight mt-1">Жиры<br>(Гормоны)</span>
@@ -1469,7 +1495,7 @@
         </section>
 
         <footer class="bg-charcoal py-12 px-6 border-t border-gold/10 relative overflow-hidden transition-colors duration-500">
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,_rgba(212,175,55,0.04),_transparent_50%)] pointer-events-none"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,_rgba(var(--color-gold),0.04),_transparent_50%)] pointer-events-none"></div>
 
             <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
                 <span class="footer-gold-sync-pulse font-sans text-[11px] tracking-[0.4em] uppercase">
@@ -1485,15 +1511,15 @@
 
             <style>
                 .footer-gold-sync-pulse {
-                    color: #D4AF37; opacity: 0.3; text-shadow: 0 0 10px rgba(212, 175, 55, 0);
+                    color: rgb(var(--color-gold)); opacity: 0.3; text-shadow: 0 0 10px rgba(var(--color-gold), 0);
                     animation: syncGoldBreath 4.5s ease-in-out infinite; transition: color 0.3s ease;
                 }
                 @keyframes syncGoldBreath {
-                    0%, 100% { opacity: 0.25; text-shadow: 0 0 5px rgba(212, 175, 55, 0); transform: scale(1); }
-                    50% { opacity: 0.8; text-shadow: 0 0 18px rgba(212, 175, 55, 0.45); transform: scale(1.01); }
+                    0%, 100% { opacity: 0.25; text-shadow: 0 0 5px rgba(var(--color-gold), 0); transform: scale(1); }
+                    50% { opacity: 0.8; text-shadow: 0 0 18px rgba(var(--color-gold), 0.45); transform: scale(1.01); }
                 }
                 .footer-gold-sync-pulse:hover {
-                    opacity: 1 !important; color: #F4CF57; text-shadow: 0 0 25px rgba(212, 175, 55, 0.6); cursor: pointer;
+                    opacity: 1 !important; color: #F4CF57; text-shadow: 0 0 25px rgba(var(--color-gold), 0.6); cursor: pointer;
                 }
             </style>
         </footer>
@@ -1536,7 +1562,7 @@
         // Меняем цвет шапки в браузере для мобильных устройств
         const metaThemeColor = document.getElementById('theme-color-meta');
         if (metaThemeColor) {
-            metaThemeColor.setAttribute('content', isSoft ? '#1E1E1E' : '#050505');
+            metaThemeColor.setAttribute('content', isSoft ? '#262626' : '#050505');
         }
 
         // Отключаем жесткий класс транзишена после завершения анимации
@@ -1549,7 +1575,7 @@
     if (localStorage.getItem('markov-theme') === 'soft') {
         document.body.classList.add('theme-soft');
         const metaThemeColor = document.getElementById('theme-color-meta');
-        if (metaThemeColor) metaThemeColor.setAttribute('content', '#1E1E1E');
+        if (metaThemeColor) metaThemeColor.setAttribute('content', '#262626');
     }
 
     // --- УПРАВЛЕНИЕ ПОЛИТИКОЙ И АККОРДЕОНОМ ---
@@ -1823,7 +1849,7 @@
                     if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
                 }
                 draw() {
-                    ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+                    ctx.fillStyle = `rgba(var(--color-gold), ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
                 }
             }
             function initParticles() { particlesArray = []; for (let i = 0; i < numberOfParticles; i++) particlesArray.push(new Particle()); }
@@ -1883,7 +1909,7 @@
                 document.querySelectorAll('.psycho-input').forEach(input => {
                     let val = parseInt(input.value);
                     if (isNaN(val) || val < 1 || val > 10) { isValid = false; input.style.borderBottomColor = '#ef4444'; }
-                    else { input.style.borderBottomColor = 'rgba(212, 175, 55, 0.4)'; }
+                    else { input.style.borderBottomColor = 'rgba(var(--color-gold), 0.4)'; }
                 });
                 if (!isValid) return;
             }
@@ -1893,7 +1919,7 @@
                     isNumericValid = false;
                     input.style.borderBottomColor = '#ef4444';
                 } else {
-                    input.style.borderBottomColor = 'rgba(212, 175, 55, 0.4)';
+                    input.style.borderBottomColor = 'rgba(var(--color-gold), 0.4)';
                 }
             });
             if (!isNumericValid) return;
@@ -1935,7 +1961,6 @@
             window.requestAnimationFrame(step);
         }
 
-        // --- Вспомогательная функция для обновления кнопок через чистый CSS-класс ---
         function updateSomaButtons(selectorPrefix, selectedVal) {
             document.querySelectorAll(selectorPrefix).forEach(btn => {
                 btn.classList.remove('soma-ecto', 'soma-meso', 'soma-endo', 'border-white/20', 'text-dim', 'active');
@@ -2041,7 +2066,7 @@
                     verdictEl.innerHTML = `<strong>Анализ (${(ratio*100).toFixed(0)}% от макс.):</strong> Отличная форма. Вы уже выделяетесь из толпы. Сила начинает работать на ваш статус. <br><br><strong>Стратегия:</strong> Фокус на специализацию и пропорции. Пора выводить качество тела на новый уровень за счет тонкой биохимической настройки питания под ваш тип телосложения.`; 
                 }
                 else if(ratio <= 1.03) { 
-                    statusEl.innerText = "Элита"; statusEl.style.color = "#D4AF37"; 
+                    statusEl.innerText = "Элита"; statusEl.style.color = "rgb(var(--color-gold))"; 
                     verdictEl.innerHTML = `<strong>Анализ (${(ratio*100).toFixed(0)}% от макс.):</strong> Генетическая элита. Вы подошли к пределу натурального мышечного роста. Ваша дисциплина вызывает абсолютное уважение.<br><br><strong>Стратегия:</strong> Удержание формы, фокус на биохакинге, долголетии связок и идеальном гормональном здоровье.`; 
                 }
                 else { 
@@ -2058,7 +2083,7 @@
                     verdictEl.innerHTML = `<strong>Анализ (${(ratio*100).toFixed(0)}% от макс.):</strong> Фитнес-стандарт. Упругое, подтянутое тело с красивыми линиями. <br><br><strong>Стратегия:</strong> Идеальный баланс женственности и спорта. Поддерживайте форму циклированием углеводов (особенно важно для вашего соматипа) и регулярными чекапами.`; 
                 }
                 else if(ratio <= 1.03) { 
-                    statusEl.innerText = "Элита"; statusEl.style.color = "#D4AF37"; 
+                    statusEl.innerText = "Элита"; statusEl.style.color = "rgb(var(--color-gold))"; 
                     verdictEl.innerHTML = `<strong>Анализ (${(ratio*100).toFixed(0)}% от макс.):</strong> Высочайший уровень мышечной массы (категории CrossFit / Wellness). <br><br><strong>Стратегия:</strong> Внимательный контроль женского цикла и гормональной панели. Требуется профессиональное восстановление ЦНС после тяжелых нагрузок.`; 
                 }
                 else {
@@ -2075,8 +2100,8 @@
 
         document.querySelectorAll('.nutri-goal').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.nutri-goal').forEach(b => { b.classList.replace('border-gold','border-white/20'); b.classList.replace('text-gold','text-dim'); b.classList.remove('shadow-[0_0_15px_rgba(212,175,55,0.4)]'); });
-                btn.classList.replace('border-white/20','border-gold'); btn.classList.replace('text-dim','text-gold'); btn.classList.add('shadow-[0_0_15px_rgba(212,175,55,0.4)]');
+                document.querySelectorAll('.nutri-goal').forEach(b => { b.classList.replace('border-gold','border-white/20'); b.classList.replace('text-gold','text-dim'); b.classList.remove('shadow-[0_0_15px_rgba(var(--color-gold),0.4)]'); });
+                btn.classList.replace('border-white/20','border-gold'); btn.classList.replace('text-dim','text-gold'); btn.classList.add('shadow-[0_0_15px_rgba(var(--color-gold),0.4)]');
                 nutriGoal = btn.getAttribute('data-goal');
                 updateIfVisible('calc-nutri', calculateNutri);
             });
