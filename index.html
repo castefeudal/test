@@ -223,8 +223,9 @@
         }
 
         /* Эффекты оцифровки */
-        @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
-        .animate-scanline { animation: scanline 1.5s ease-in-out infinite; background: linear-gradient(to bottom, transparent, #F4CF57, #ffffff); }
+        @keyframes scanline-horizontal { 0% { transform: translateX(-100%); } 100% { transform: translateX(300%); } }
+        .animate-scanline-horizontal { animation: scanline-horizontal 1.5s ease-in-out infinite; }
+        
         @keyframes data-flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         .animate-data-flicker { animation: data-flicker 0.15s infinite; }
 
@@ -266,7 +267,7 @@
     <div id="cursor" class="custom-cursor"></div>
 
     <!-- Плавающая кнопка связи (Task 5) -->
-    <a href="https://t.me/markovmade?text=Здравствуйте!%20Готов%20работать%20над%20собой%20и%20изменить%20свою%20жизнь%20к%20лучшему!" target="_blank" id="floating-cta" class="interactive fixed bottom-8 right-6 md:right-10 z-[90] opacity-0 translate-y-10 pointer-events-none transition-all duration-700 ease-out group flex items-center justify-center">
+    <a href="https://t.me/markovmade?text=Здравствуйте!%20Готов%20работать%20над%20собой%20и%20изменить%20свою%20жизнь%20к%20лучшему!" target="_blank" id="floating-cta" class="interactive fixed bottom-8 right-6 md:right-10 z-[90] opacity-0 translate-y-10 pointer-events-none transition-all duration-500 ease-out group flex items-center justify-center">
         <div class="absolute inset-0 rounded-full bg-gold/50 animate-ping opacity-30 group-hover:opacity-100"></div>
         <div class="relative bg-obsidian border border-gold/50 text-gold rounded-full p-4 shadow-[0_0_20px_rgba(212,175,55,0.2)] group-hover:bg-gold group-hover:text-obsidian group-hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-300">
             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
@@ -327,13 +328,13 @@
 
     <!-- MOBILE MENU -->
     <div id="mobile-menu" class="fixed inset-0 z-[55] bg-obsidian flex flex-col justify-center px-6 transform translate-x-full transition-transform duration-700 cubic-bezier(0.7,0,0.3,1) overflow-y-auto">
-        <nav class="flex flex-col items-center gap-8 min-h-min py-16">
-            <a href="#about" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">I. Обо мне</a>
-            <a href="#principles" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">II. Принципы</a>
-            <a href="#calculators" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-platinum drop-shadow-[0_0_10px_rgba(255,255,255,0.1)] transition-colors block" onclick="toggleMenu()">III. Расчёт</a>
-            <a href="#services" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-gold transition-colors block" onclick="toggleMenu()">IV. Услуги</a>
-            <a href="#team" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">V. Команда</a>
-            <a href="#contact" class="interactive font-sans text-[13px] md:text-sm font-medium tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">VI. Контакты</a>
+        <nav class="flex flex-col items-center gap-10 min-h-min py-16 w-full">
+            <a href="#about" class="interactive font-sans text-lg md:text-xl font-bold tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">I. Обо мне</a>
+            <a href="#principles" class="interactive font-sans text-lg md:text-xl font-bold tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">II. Принципы</a>
+            <a href="#calculators" class="interactive font-sans text-xl md:text-2xl font-bold tracking-[0.3em] uppercase text-platinum drop-shadow-[0_0_15px_rgba(242,242,242,0.8)] transition-colors block" onclick="toggleMenu()">III. Расчёт</a>
+            <a href="#services" class="interactive font-sans text-lg md:text-xl font-bold tracking-[0.3em] uppercase text-gold transition-colors block" onclick="toggleMenu()">IV. Услуги</a>
+            <a href="#team" class="interactive font-sans text-lg md:text-xl font-bold tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">V. Команда</a>
+            <a href="#contact" class="interactive font-sans text-lg md:text-xl font-bold tracking-[0.3em] uppercase text-platinum hover:text-gold transition-colors block" onclick="toggleMenu()">VI. Контакты</a>
         </nav>
     </div>
 
@@ -793,7 +794,7 @@
                                         <div class="flex flex-col">
                                             <h4 class="font-serif text-2xl md:text-3xl text-gold leading-tight mb-8">Ваше меню — это рецепт здоровья или история болезни?</h4>
                                             <p class="font-sans text-platinum/80 text-base leading-loose mb-10">
-                                                <span class="text-platinum font-bold">Годы очной практики</span> диетологом и работа с <span class="text-platinum font-bold">эндокринологией</span> научили меня одному: тело не умеет врать. Я анализирую <span class="text-gold font-bold">биохимию вашего тела</span>. Еда — это либо ваше лекарство, либо ваш медленный яд.
+                                                <span class="text-platinum font-bold">Годы очной практики</span> диетологом и работа с <span class="text-platinum font-bold">эндокринологией</span> научили меня одному: тело не умеет врать. Я анализирую <span class="text-gold font-bold">биохимию вашей крови</span>. Еда — это либо ваше лекарство, либо ваш медленный яд.
                                             </p>
                                             <ul class="space-y-4 font-sans text-base text-platinum/90">
                                                 <li class="flex items-center gap-4"><span class="w-1.5 h-1.5 bg-gold rounded-full flex-shrink-0"></span> Коррекция дефицитов и восстановление энергии.</li>
@@ -1025,38 +1026,42 @@
                                     </div>
                                     <!-- Соматип -->
                                     <div>
-                                        <label class="font-sans text-xs text-dim tracking-widest uppercase block mb-3 text-center">Соматип (Костяк)</label>
+                                        <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase block mb-3 text-center">Соматип (Костяк)</label>
                                         <div class="flex gap-2">
                                             <button class="ffmi-soma flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="ecto">Эктоморф</button>
-                                            <button class="ffmi-soma active flex-1 py-3 border border-gold text-gold text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="meso">Мезоморф</button>
+                                            <button class="ffmi-soma active flex-1 py-3 border border-gold text-gold shadow-[0_0_15px_rgba(212,175,55,0.4)] text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="meso">Мезоморф</button>
                                             <button class="ffmi-soma flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="endo">Эндоморф</button>
                                         </div>
-                                        <p class="text-[10px] text-dim/50 text-center mt-3 font-sans leading-relaxed">
-                                            <span class="text-gold">Индекс Соловьева</span> (обхват запястья): <br>
-                                            М: &lt;17см (Экто) | 17-20см (Мезо) | &gt;20см (Эндо)<br>
-                                            Ж: &lt;15см (Экто) | 15-17см (Мезо) | &gt;17см (Эндо)
-                                        </p>
+                                        <div class="bg-white/5 border border-white/10 rounded-sm p-4 mt-4">
+                                            <p class="text-xs text-platinum/80 text-center font-sans leading-relaxed">
+                                                <span class="text-gold font-bold">Индекс Соловьева</span> (обхват запястья): <br>
+                                                М: &lt;17см (Экто) | 17-20см (Мезо) | &gt;20см (Эндо)<br>
+                                                Ж: &lt;15см (Экто) | 15-17см (Мезо) | &gt;17см (Эндо)
+                                            </p>
+                                        </div>
                                     </div>
                                     <!-- Поля ввода -->
                                     <div class="grid grid-cols-3 gap-4 pt-4 border-t border-white/5">
                                         <div class="flex flex-col items-center">
-                                            <label class="font-sans text-[10px] text-dim tracking-widest uppercase mb-2">Рост (см)</label>
+                                            <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase mb-2">Рост (см)</label>
                                             <input type="number" id="ffmi-height" class="luxury-input-number calc-input-trigger" placeholder="180" value="180" inputmode="decimal">
                                         </div>
                                         <div class="flex flex-col items-center">
-                                            <label class="font-sans text-[10px] text-dim tracking-widest uppercase mb-2">Вес (кг)</label>
+                                            <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase mb-2">Вес (кг)</label>
                                             <input type="number" id="ffmi-weight" class="luxury-input-number calc-input-trigger" placeholder="80" value="80" step="0.1" inputmode="decimal">
                                         </div>
                                         <div class="flex flex-col items-center">
-                                            <label class="font-sans text-[10px] text-dim tracking-widest uppercase mb-2">Жир (%)</label>
+                                            <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase mb-2">Жир (%)</label>
                                             <input type="number" id="ffmi-fat" class="luxury-input-number calc-input-trigger" placeholder="15" value="15" step="0.1" inputmode="decimal">
                                         </div>
                                     </div>
-                                    <p class="text-[10px] text-dim/50 text-center font-sans leading-relaxed mt-4">
-                                        * Ориентир % жира:<br>
-                                        Мужчины: 8-12% (глубокая сепарация), 13-16% (атлетичное сложение), 17-20% (сглаженный рельеф). <br>
-                                        Женщины: 16-19% (выраженный рельеф), 20-24% (фитнес-стандарт), 25-28% (норма).
-                                    </p>
+                                    <div class="bg-white/5 border border-white/10 rounded-sm p-4 mt-4">
+                                        <p class="text-xs text-platinum/80 text-center font-sans leading-relaxed">
+                                            <span class="text-gold font-bold">* Ориентир % жира:</span><br>
+                                            Мужчины: 8-12% (сепарация), 13-16% (атлетик), 17-20% (норма). <br>
+                                            Женщины: 16-19% (рельеф), 20-24% (фитнес), 25-28% (норма).
+                                        </p>
+                                    </div>
                                 </div>
                                 <button onclick="runAnalysis('calc-fitness', calculateFFMI)" class="interactive w-full py-4 bg-gold/10 border border-gold text-gold font-sans text-xs font-bold tracking-[0.2em] uppercase hover:bg-gold hover:text-obsidian transition-all duration-300">Анализировать генотип</button>
                             </div>
@@ -1065,11 +1070,11 @@
                             <div class="relative bg-black/40 border border-white/5 p-8 rounded-sm overflow-hidden flex flex-col justify-center min-h-[400px]">
                                 <div id="calc-fitness-wait" class="absolute inset-0 flex flex-col items-center justify-center bg-obsidian/90 z-20 transition-opacity duration-300">
                                     <svg class="w-12 h-12 text-dim/30 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                                    <span class="font-sans text-[10px] text-dim/50 tracking-widest uppercase text-center leading-loose">Введите метрики <br> для формирования отчета</span>
+                                    <span class="font-sans text-xs text-platinum/80 tracking-widest uppercase text-center leading-loose">Введите метрики <br> для формирования отчета</span>
                                 </div>
-                                <!-- Task 2: CSS Анимация сканирования -->
+                                <!-- Task 2 & 4: CSS Анимация сканирования на весь блок -->
                                 <div id="calc-fitness-loading" class="hidden absolute inset-0 flex-col items-center justify-center bg-obsidian z-30">
-                                    <div class="w-full h-1 bg-white/10 absolute top-0 left-0"><div class="h-full w-1/3 animate-scanline shadow-[0_0_15px_#D4AF37]"></div></div>
+                                    <div class="w-full h-1.5 bg-white/10 absolute top-0 left-0 overflow-hidden"><div class="h-full bg-gold w-1/2 animate-scanline-horizontal shadow-[0_0_15px_#D4AF37]"></div></div>
                                     <span class="font-sans text-xs text-gold tracking-widest uppercase animate-pulse mb-4">Cyber-Scan Active</span>
                                     <span class="neural-text font-serif text-2xl text-platinum animate-data-flicker">0XF8A...</span>
                                 </div>
@@ -1126,30 +1131,30 @@
                                 </div>
                                 <div class="grid grid-cols-2 gap-6">
                                     <div>
-                                        <label class="font-sans text-xs text-dim tracking-widest uppercase block mb-3 text-center">Пол</label>
+                                        <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase block mb-3 text-center">Пол</label>
                                         <div class="flex gap-2">
                                             <button class="nutri-gender active flex-1 py-3 border border-[#3b82f6] text-[#3b82f6] shadow-[0_0_15px_rgba(59,130,246,0.3)] text-[10px] tracking-widest uppercase rounded-sm transition-all" data-gender="male">М</button>
                                             <button class="nutri-gender flex-1 py-3 border border-white/20 text-dim text-[10px] tracking-widest uppercase rounded-sm transition-all" data-gender="female">Ж</button>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="font-sans text-xs text-dim tracking-widest uppercase block mb-3 text-center">Возраст</label>
-                                        <input type="number" id="nutri-age" class="luxury-input-number calc-input-trigger w-full" placeholder="28" value="28" inputmode="numeric">
+                                        <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase block mb-3 text-center">Возраст</label>
+                                        <input type="number" id="nutri-age" class="luxury-input-number calc-input-trigger w-full" placeholder="29" value="29" inputmode="numeric">
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-6">
                                     <div>
-                                        <label class="font-sans text-xs text-dim tracking-widest uppercase block mb-3 text-center">Рост (см)</label>
+                                        <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase block mb-3 text-center">Рост (см)</label>
                                         <input type="number" id="nutri-height" class="luxury-input-number calc-input-trigger w-full" placeholder="180" value="180" inputmode="decimal">
                                     </div>
                                     <div>
-                                        <label class="font-sans text-xs text-dim tracking-widest uppercase block mb-3 text-center">Вес (кг)</label>
+                                        <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase block mb-3 text-center">Вес (кг)</label>
                                         <input type="number" id="nutri-weight" class="luxury-input-number calc-input-trigger w-full" placeholder="80" value="80" step="0.1" inputmode="decimal">
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label class="font-sans text-[10px] text-dim tracking-widest uppercase block mb-2">Активность (NEAT)</label>
+                                        <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase block mb-2">Активность (NEAT)</label>
                                         <select id="nutri-activity" class="custom-select calc-input-trigger w-full bg-transparent border-b border-gold/40 py-3 text-gold font-sans text-xs outline-none cursor-pointer">
                                             <option value="1.2" class="bg-obsidian text-platinum">Офис / Без спорта</option>
                                             <option value="1.375" class="bg-obsidian text-platinum">Лёгкая (1-3 тренировки)</option>
@@ -1158,18 +1163,18 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="font-sans text-[10px] text-dim tracking-widest uppercase block mb-2 text-center">Соматип (Костяк)</label>
+                                        <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase block mb-2 text-center">Соматип (Костяк)</label>
                                         <div class="flex gap-2">
                                             <button class="nutri-soma flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="ecto">Эктоморф</button>
-                                            <button class="nutri-soma active flex-1 py-3 border border-gold text-gold text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="meso">Мезоморф</button>
+                                            <button class="nutri-soma active flex-1 py-3 border border-gold text-gold shadow-[0_0_15px_rgba(212,175,55,0.4)] text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="meso">Мезоморф</button>
                                             <button class="nutri-soma flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="endo">Эндоморф</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="font-sans text-[10px] text-dim tracking-widest uppercase block mb-3 text-center">Биохимическая Цель</label>
+                                    <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase block mb-3 text-center">Биохимическая Цель</label>
                                     <div class="flex gap-2">
-                                        <button class="nutri-goal active flex-1 py-3 border border-gold text-gold text-[10px] tracking-widest uppercase rounded-sm transition-all" data-goal="cut">Рельеф (-20%)</button>
+                                        <button class="nutri-goal active flex-1 py-3 border border-gold text-gold shadow-[0_0_15px_rgba(212,175,55,0.4)] text-[10px] tracking-widest uppercase rounded-sm transition-all" data-goal="cut">Рельеф (-20%)</button>
                                         <button class="nutri-goal flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-goal="maintain">Баланс (0%)</button>
                                         <button class="nutri-goal flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-goal="bulk">Масса (+15%)</button>
                                     </div>
@@ -1181,11 +1186,11 @@
                             <div class="relative bg-black/40 border border-white/5 p-8 rounded-sm overflow-hidden flex flex-col justify-center min-h-[400px]">
                                 <div id="calc-nutri-wait" class="absolute inset-0 flex flex-col items-center justify-center bg-obsidian/90 z-20 transition-opacity duration-300">
                                     <svg class="w-12 h-12 text-dim/30 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
-                                    <span class="font-sans text-[10px] text-dim/50 tracking-widest uppercase text-center leading-loose">Введите метрики <br> для биохимического анализа</span>
+                                    <span class="font-sans text-xs text-platinum/80 tracking-widest uppercase text-center leading-loose">Введите метрики <br> для биохимического анализа</span>
                                 </div>
-                                <!-- Task 2: Scanline -->
+                                <!-- Task 2 & 4: Scanline -->
                                 <div id="calc-nutri-loading" class="hidden absolute inset-0 flex-col items-center justify-center bg-obsidian z-30">
-                                    <div class="w-full h-1 bg-white/10 absolute top-0 left-0"><div class="h-full w-1/3 animate-scanline shadow-[0_0_15px_#D4AF37]"></div></div>
+                                    <div class="w-full h-1.5 bg-white/10 absolute top-0 left-0 overflow-hidden"><div class="h-full bg-platinum w-1/2 animate-scanline-horizontal shadow-[0_0_15px_#F2F2F2]"></div></div>
                                     <span class="font-sans text-xs text-platinum tracking-widest uppercase animate-pulse mb-4">Bio-Scan Active</span>
                                     <span class="neural-text font-serif text-2xl text-gold animate-data-flicker">METABOLIC...</span>
                                 </div>
@@ -1242,23 +1247,23 @@
                                 </div>
                                 <div class="space-y-4 border border-white/5 bg-white/[0.01] p-6 md:p-8 rounded-sm">
                                     <div class="flex justify-between items-center border-b border-white/5 pb-4">
-                                        <label class="font-sans text-xs text-dim tracking-widest uppercase w-2/3 leading-snug">Фоновый стресс / Тревога</label>
+                                        <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase w-2/3 leading-snug">Фоновый стресс / Тревога</label>
                                         <input type="number" class="psycho-input luxury-input-number !w-20 !text-xl !p-2 calc-input-trigger" min="1" max="10" placeholder="1-10">
                                     </div>
                                     <div class="flex justify-between items-center border-b border-white/5 pb-4">
-                                        <label class="font-sans text-xs text-dim tracking-widest uppercase w-2/3 leading-snug">Просыпаюсь разбитым</label>
+                                        <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase w-2/3 leading-snug">Просыпаюсь разбитым</label>
                                         <input type="number" class="psycho-input luxury-input-number !w-20 !text-xl !p-2 calc-input-trigger" min="1" max="10" placeholder="1-10">
                                     </div>
                                     <div class="flex justify-between items-center border-b border-white/5 pb-4">
-                                        <label class="font-sans text-xs text-dim tracking-widest uppercase w-2/3 leading-snug">Потеря фокуса / Туман в голове</label>
+                                        <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase w-2/3 leading-snug">Потеря фокуса / Туман в голове</label>
                                         <input type="number" class="psycho-input luxury-input-number !w-20 !text-xl !p-2 calc-input-trigger" min="1" max="10" placeholder="1-10">
                                     </div>
                                     <div class="flex justify-between items-center border-b border-white/5 pb-4">
-                                        <label class="font-sans text-xs text-dim tracking-widest uppercase w-2/3 leading-snug">Тяга к сахару / кофе / соцсетям</label>
+                                        <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase w-2/3 leading-snug">Тяга к сахару / кофе / соцсетям</label>
                                         <input type="number" class="psycho-input luxury-input-number !w-20 !text-xl !p-2 calc-input-trigger" min="1" max="10" placeholder="1-10">
                                     </div>
                                     <div class="flex justify-between items-center">
-                                        <label class="font-sans text-xs text-dim tracking-widest uppercase w-2/3 leading-snug">Апатия к любимым делам</label>
+                                        <label class="font-sans text-xs font-bold text-platinum/80 tracking-widest uppercase w-2/3 leading-snug">Апатия к любимым делам</label>
                                         <input type="number" class="psycho-input luxury-input-number !w-20 !text-xl !p-2 calc-input-trigger" min="1" max="10" placeholder="1-10">
                                     </div>
                                 </div>
@@ -1269,11 +1274,11 @@
                             <div class="relative bg-black/40 border border-white/5 p-8 rounded-sm overflow-hidden flex flex-col justify-center min-h-[400px]">
                                 <div id="calc-psycho-wait" class="absolute inset-0 flex flex-col items-center justify-center bg-obsidian/90 z-20 transition-opacity duration-300">
                                     <svg class="w-12 h-12 text-dim/30 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                                    <span class="font-sans text-[10px] text-dim/50 tracking-widest uppercase text-center leading-loose">Заполните метрики (1-10) <br> для оценки состояния</span>
+                                    <span class="font-sans text-xs text-platinum/80 tracking-widest uppercase text-center leading-loose">Заполните метрики (1-10) <br> для оценки состояния</span>
                                 </div>
-                                <!-- Task 2: Scanline -->
+                                <!-- Task 2 & 4: Scanline -->
                                 <div id="calc-psycho-loading" class="hidden absolute inset-0 flex-col items-center justify-center bg-obsidian z-30">
-                                    <div class="w-full h-1 bg-white/10 absolute top-0 left-0"><div class="h-full w-1/3 animate-scanline shadow-[0_0_15px_#D4AF37]"></div></div>
+                                    <div class="w-full h-1.5 bg-white/10 absolute top-0 left-0 overflow-hidden"><div class="h-full bg-red-500 w-1/2 animate-scanline-horizontal shadow-[0_0_15px_#EF4444]"></div></div>
                                     <span class="font-sans text-xs text-red-500 tracking-widest uppercase animate-pulse mb-4">Neural-Scan Active</span>
                                     <span class="neural-text font-serif text-2xl text-platinum animate-data-flicker">SYNAPSE...</span>
                                 </div>
@@ -1535,26 +1540,37 @@
         let headerTimeout; let snapTimeout;
         let lastScrollY = window.scrollY;
 
+        // Task 3: Синхронизация плавающей кнопки CTA с появлением шапки меню
+        function toggleHeaderAndCTA(hideHeader) {
+            if (hideHeader && window.scrollY > 200) {
+                header.classList.add('scrolled-down'); header.classList.remove('scrolled-up');
+                floatCta.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+            } else {
+                header.classList.remove('scrolled-down'); header.classList.add('scrolled-up');
+                floatCta.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+            }
+        }
+
         function updateScrollVisibility() {
             const currentScrollY = window.scrollY;
             
-            // Header visibility
             if (currentScrollY > 50) {
                 if (currentScrollY < lastScrollY - 2) { 
-                    header.classList.remove('scrolled-down'); header.classList.add('scrolled-up'); clearTimeout(headerTimeout);
-                    headerTimeout = setTimeout(() => { if (window.scrollY > 50 && !document.body.classList.contains('menu-open')) { header.classList.add('scrolled-down'); header.classList.remove('scrolled-up'); } }, 3000);
+                    toggleHeaderAndCTA(false);
+                    clearTimeout(headerTimeout);
+                    headerTimeout = setTimeout(() => { 
+                        if (window.scrollY > 50 && !document.body.classList.contains('menu-open')) { 
+                            toggleHeaderAndCTA(true);
+                        } 
+                    }, 3000);
                 } else if (currentScrollY > lastScrollY + 2) { 
                     if (!document.body.classList.contains('menu-open')) {
-                        header.classList.add('scrolled-down'); header.classList.remove('scrolled-up'); clearTimeout(headerTimeout);
+                        toggleHeaderAndCTA(true);
+                        clearTimeout(headerTimeout);
                     }
                 }
-            } else { header.classList.remove('scrolled-down'); header.classList.add('scrolled-up'); }
-            
-            // Floating CTA Visibility (Task 5)
-            if (currentScrollY > metrics.windowHeight * 0.8) {
-                floatCta.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
-            } else {
-                floatCta.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+            } else { 
+                toggleHeaderAndCTA(false);
             }
 
             lastScrollY = currentScrollY;
@@ -1826,6 +1842,29 @@
             window.requestAnimationFrame(step);
         }
 
+        // --- Task 5: Helper function for Neon Buttons ---
+        function updateSomaButtons(selectorPrefix, selectedVal) {
+            document.querySelectorAll(selectorPrefix).forEach(btn => {
+                // Убираем все возможные варианты свечения
+                btn.classList.remove(
+                    'border-[#0ea5e9]', 'text-[#0ea5e9]', 'shadow-[0_0_15px_rgba(14,165,233,0.4)]',
+                    'border-gold', 'text-gold', 'shadow-[0_0_15px_rgba(212,175,55,0.4)]',
+                    'border-[#ef4444]', 'text-[#ef4444]', 'shadow-[0_0_15px_rgba(239,68,68,0.4)]',
+                    'border-white/20', 'text-dim', 'active'
+                );
+                
+                const val = btn.getAttribute('data-val');
+                if (val === selectedVal) {
+                    btn.classList.add('active');
+                    if (val === 'ecto') btn.classList.add('border-[#0ea5e9]', 'text-[#0ea5e9]', 'shadow-[0_0_15px_rgba(14,165,233,0.4)]');
+                    if (val === 'meso') btn.classList.add('border-gold', 'text-gold', 'shadow-[0_0_15px_rgba(212,175,55,0.4)]');
+                    if (val === 'endo') btn.classList.add('border-[#ef4444]', 'text-[#ef4444]', 'shadow-[0_0_15px_rgba(239,68,68,0.4)]');
+                } else {
+                    btn.classList.add('border-white/20', 'text-dim');
+                }
+            });
+        }
+
         // --- I. ФИТНЕС (FFMI) ЛОГИКА ---
         let ffmiGender = 'male'; let ffmiSoma = 'meso';
         
@@ -1850,9 +1889,8 @@
         
         document.querySelectorAll('.ffmi-soma').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.ffmi-soma').forEach(b => { b.classList.replace('border-gold', 'border-white/20'); b.classList.replace('text-gold', 'text-dim'); });
-                btn.classList.replace('border-white/20', 'border-gold'); btn.classList.replace('text-dim', 'text-gold');
                 ffmiSoma = btn.getAttribute('data-val');
+                updateSomaButtons('.ffmi-soma', ffmiSoma);
                 updateIfVisible('calc-fitness', calculateFFMI);
             });
         });
@@ -1952,8 +1990,8 @@
 
         document.querySelectorAll('.nutri-goal').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.nutri-goal').forEach(b => { b.classList.replace('border-gold','border-white/20'); b.classList.replace('text-gold','text-dim'); });
-                btn.classList.replace('border-white/20','border-gold'); btn.classList.replace('text-dim','text-gold');
+                document.querySelectorAll('.nutri-goal').forEach(b => { b.classList.replace('border-gold','border-white/20'); b.classList.replace('text-gold','text-dim'); b.classList.remove('shadow-[0_0_15px_rgba(212,175,55,0.4)]'); });
+                btn.classList.replace('border-white/20','border-gold'); btn.classList.replace('text-dim','text-gold'); btn.classList.add('shadow-[0_0_15px_rgba(212,175,55,0.4)]');
                 nutriGoal = btn.getAttribute('data-goal');
                 updateIfVisible('calc-nutri', calculateNutri);
             });
@@ -1980,9 +2018,8 @@
 
         document.querySelectorAll('.nutri-soma').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.nutri-soma').forEach(b => { b.classList.replace('border-gold','border-white/20'); b.classList.replace('text-gold','text-dim'); });
-                btn.classList.replace('border-white/20','border-gold'); btn.classList.replace('text-dim','text-gold');
                 nutriSoma = btn.getAttribute('data-val');
+                updateSomaButtons('.nutri-soma', nutriSoma);
                 updateIfVisible('calc-nutri', calculateNutri);
             });
         });
@@ -1993,7 +2030,7 @@
         });
 
         window.calculateNutri = function() {
-            const age = parseInt(document.getElementById('nutri-age').value) || 28; // Павел 28-29 лет :)
+            const age = parseInt(document.getElementById('nutri-age').value) || 29; 
             const h = parseInt(document.getElementById('nutri-height').value) || 180;
             const w = parseFloat(document.getElementById('nutri-weight').value) || 80;
             const activity = parseFloat(document.getElementById('nutri-activity').value) || 1.55;
