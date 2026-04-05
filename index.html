@@ -109,15 +109,54 @@
             --text-platinum: 242 242 242; /* #F2F2F2 */
         }
 
+        /* 10/10 ОПТИМИЗАЦИЯ ДЛЯ АСТИГМАТИЗМА И УСТАЛОГО ЗРЕНИЯ */
         body.theme-soft {
-            --bg-obsidian: 24 24 27;      /* #18181B - Zinc 900 (Мягкий графит для глаз) */
-            --bg-charcoal: 39 39 42;      /* #27272A - Zinc 800 */
-            --text-platinum: 228 228 231; /* #E4E4E7 - Чуть приглушенный белый для снижения бликов */
+            --bg-obsidian: 30 30 30;      /* #1E1E1E - Эталонный серый (Material Design) */
+            --bg-charcoal: 40 40 40;      /* #282828 */
+            --text-platinum: 215 215 215; /* #D7D7D7 - Матовый белый, снимает ореол (Halation Effect) */
+            
+            /* Уплотняем шрифт. Сверхтонкие линии на темном фоне размываются при астигматизме */
+            -webkit-font-smoothing: subpixel-antialiased;
+            -moz-osx-font-smoothing: auto;
         }
 
+        /* Главный враг астигматизма - эффект "Гало" (Halation).
+           Светящиеся тени вокруг объектов и текста заставляют хрусталик напрягаться.
+           Мы заменяем "неоновое свечение" на "матовую бумагу".
+        */
+        body.theme-soft .menu-highlight-gold,
+        body.theme-soft .menu-highlight-platinum {
+            text-shadow: none !important;
+            border-bottom-color: rgba(212, 175, 55, 0.4) !important;
+        }
+
+        body.theme-soft .pulse-gold-reverse,
+        body.theme-soft .footer-gold-sync-pulse {
+            text-shadow: none !important;
+            animation: none !important; /* Пульсация текста сильно бьет по глазам при усталости */
+            opacity: 0.8 !important;
+            color: #D4AF37 !important;
+        }
+
+        body.theme-soft [class*="shadow-\\[0_0_"] {
+            /* Тень уходит вниз, а не светится неоном вокруг кнопки */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4) !important; 
+        }
+
+        body.theme-soft [class*="drop-shadow-"] {
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5)) !important;
+        }
+        
+        /* Успокаиваем анимации, которые перегружают ЦНС при долгом чтении */
+        body.theme-soft .animate-pulse,
+        body.theme-soft .animate-ping {
+            animation-duration: 4s !important;
+            opacity: 0.3 !important;
+        }
+        
         /* Класс для плавного переключения темы */
         .theme-transition, .theme-transition * {
-            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease !important;
+            transition: background-color 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease, text-shadow 0.4s ease, color 0.4s ease !important;
         }
 
         /* === GLOBAL RESET & BASE === */
@@ -264,7 +303,7 @@
         .timeline-nav { transition: all 0.3s ease; }
         .timeline-nav.active { color: #D4AF37; border-bottom-color: #D4AF37; }
 
-        /* === ФИКС ЦВЕТОВ КНОПОК РАСЧЕТА (ОТВЯЗКА ОТ CDN) === */
+        /* === ФИКС ЦВЕТОВ КНОПОК РАСЧЕТА === */
         .soma-ecto { border-color: #0ea5e9 !important; color: #0ea5e9 !important; box-shadow: 0 0 15px rgba(14,165,233,0.4) !important; }
         .soma-meso { border-color: #D4AF37 !important; color: #D4AF37 !important; box-shadow: 0 0 15px rgba(212,175,55,0.4) !important; }
         .soma-endo { border-color: #ef4444 !important; color: #ef4444 !important; box-shadow: 0 0 15px rgba(239,68,68,0.4) !important; }
@@ -338,11 +377,11 @@
                 <a href="#team" class="interactive nav-link font-sans text-[12px] uppercase tracking-luxury text-dim hover:text-platinum transition-colors">V. Команда</a>
                 
                 <div class="flex items-center ml-2 border-l border-white/10 pl-6 gap-6">
-                    <!-- Кнопка смены темы для ПК -->
-                    <button onclick="toggleTheme()" class="interactive text-dim hover:text-gold transition-colors" title="Смена контраста (Комфортный режим)">
+                    <!-- Кнопка смены темы (Глаз) -->
+                    <button onclick="toggleTheme()" class="interactive text-dim hover:text-gold transition-colors flex items-center gap-2" title="Комфортный режим для глаз">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <circle cx="12" cy="12" r="9" />
-                            <path d="M12 3v18A9 9 0 0 0 12 3z" fill="currentColor" stroke-width="1.5" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
                     </button>
                     
@@ -362,8 +401,8 @@
                 <!-- Кнопка смены темы для Мобильных -->
                 <button onclick="toggleTheme()" class="interactive text-dim hover:text-gold transition-colors" title="Смена контраста">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <circle cx="12" cy="12" r="9" />
-                        <path d="M12 3v18A9 9 0 0 0 12 3z" fill="currentColor" stroke-width="1.5" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                 </button>
                 <button id="burger-btn" class="interactive relative w-10 h-10 flex flex-col justify-center items-end gap-1.5 group" onclick="toggleMenu()" aria-label="Menu">
@@ -1497,7 +1536,7 @@
         // Меняем цвет шапки в браузере для мобильных устройств
         const metaThemeColor = document.getElementById('theme-color-meta');
         if (metaThemeColor) {
-            metaThemeColor.setAttribute('content', isSoft ? '#18181B' : '#050505');
+            metaThemeColor.setAttribute('content', isSoft ? '#1E1E1E' : '#050505');
         }
 
         // Отключаем жесткий класс транзишена после завершения анимации
@@ -1510,7 +1549,7 @@
     if (localStorage.getItem('markov-theme') === 'soft') {
         document.body.classList.add('theme-soft');
         const metaThemeColor = document.getElementById('theme-color-meta');
-        if (metaThemeColor) metaThemeColor.setAttribute('content', '#18181B');
+        if (metaThemeColor) metaThemeColor.setAttribute('content', '#1E1E1E');
     }
 
     // --- УПРАВЛЕНИЕ ПОЛИТИКОЙ И АККОРДЕОНОМ ---
