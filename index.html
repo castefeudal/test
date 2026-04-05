@@ -968,7 +968,7 @@
                     </p>
                     <div class="mt-6 flex items-center justify-center gap-2 text-[10px] text-gold/60 uppercase tracking-widest font-bold">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Погрешность вычислений &lt; 3.4%
+                        Погрешность вычислений ± 9-12%
                     </div>
                 </div>
 
@@ -1130,9 +1130,9 @@
                                     <div>
                                         <label class="font-sans text-[10px] text-dim tracking-widest uppercase block mb-2 text-center">Соматип (Костяк)</label>
                                         <div class="flex gap-2">
-                                            <button class="nutri-soma flex-1 py-3 border border-white/20 text-dim hover:text-platinum text-[8px] tracking-widest uppercase rounded-sm transition-all" data-val="ecto">Экто</button>
-                                            <button class="nutri-soma active flex-1 py-3 border border-gold text-gold text-[8px] tracking-widest uppercase rounded-sm transition-all" data-val="meso">Мезо</button>
-                                            <button class="nutri-soma flex-1 py-3 border border-white/20 text-dim hover:text-platinum text-[8px] tracking-widest uppercase rounded-sm transition-all" data-val="endo">Эндо</button>
+                                            <button class="nutri-soma flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="ecto">Эктоморф</button>
+                                            <button class="nutri-soma active flex-1 py-3 border border-gold text-gold text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="meso">Мезоморф</button>
+                                            <button class="nutri-soma flex-1 py-3 border border-white/20 text-dim hover:border-white/50 hover:text-platinum text-[10px] tracking-widest uppercase rounded-sm transition-all" data-val="endo">Эндоморф</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1790,18 +1790,30 @@
             const w = parseFloat(document.getElementById('ffmi-weight').value) || 80;
             const f = parseFloat(document.getElementById('ffmi-fat').value) || 15;
             
-            const leanWeight = w * (1 - (f / 100));
-            const ffmi = leanWeight / (h * h);
+            // Научная корректировка мышечно-костной массы (LBM)
+            // Учитываем плотность костяка и соединительных тканей в зависимости от пола и соматипа
+            let genderDensityMod = (ffmiGender === 'male') ? 1.0 : 0.92; // У женщин костная масса и плотность соединительной ткани ниже
+            let somaDensityMod = 1.0;
+            if (ffmiSoma === 'ecto') somaDensityMod = 0.96; // Легкий, тонкий костяк
+            if (ffmiSoma === 'endo') somaDensityMod = 1.01; // Широкий костяк, больше базовой массы
+            if (ffmiSoma === 'meso') somaDensityMod = 1.05; // Идеальная плотность и толщина костей для мышечной гипертрофии
+
+            // Скорректированная сухая масса
+            const leanWeightRaw = w * (1 - (f / 100));
+            const leanWeightAdjusted = leanWeightRaw * genderDensityMod * somaDensityMod;
+            
+            // Расчет FFMI
+            const ffmi = leanWeightAdjusted / (h * h);
             const normalizedFfmi = ffmi + 6.1 * (1.8 - h);
 
-            document.getElementById('ffmi-lbm').innerText = leanWeight.toFixed(1) + ' кг';
+            document.getElementById('ffmi-lbm').innerText = leanWeightAdjusted.toFixed(1) + ' кг';
             animateNumber("ffmi-score", 0, normalizedFfmi, 1200);
 
-            // Определение генетического предела по соматипу
-            let baseLimit = (ffmiGender === 'male') ? 25 : 20.5;
-            if (ffmiSoma === 'ecto') baseLimit -= 1.5;
-            if (ffmiSoma === 'endo') baseLimit -= 0.5;
-            if (ffmiSoma === 'meso') baseLimit += 0.5;
+            // Определение генетического предела по соматипу и полу
+            let baseLimit = (ffmiGender === 'male') ? 25 : 21;
+            if (ffmiSoma === 'ecto') baseLimit -= 1.8; 
+            if (ffmiSoma === 'endo') baseLimit -= 0.5; 
+            if (ffmiSoma === 'meso') baseLimit += 1.0; 
 
             // Анимация SVG Круга
             const circle = document.getElementById('ffmi-svg-bar');
@@ -1813,39 +1825,45 @@
             circle.style.strokeDashoffset = circumference;
             setTimeout(() => { circle.style.strokeDashoffset = offset; }, 50);
 
-            // Конкретные рекомендации
+            // Динамические статусы и рекомендации (зависят от процента достижения предела)
             const statusEl = document.getElementById('ffmi-status');
             const verdictEl = document.getElementById('ffmi-verdict');
             
+            const ratio = normalizedFfmi / baseLimit;
+
             if(ffmiGender === 'male') {
-                if(normalizedFfmi < 19) { 
+                if(ratio < 0.78) { 
                     statusEl.innerText = "Новичок"; statusEl.style.color = "#B5B5B5"; 
-                    verdictEl.innerHTML = `<strong>Анализ:</strong> Мышечный фундамент откровенно слаб. Это не приговор, а точка старта. <br><br><strong>Стратегия:</strong> Категорически необходим силовой цикл (базовые многосуставные движения) и строгий белковый профицит. Забудьте про экстремальные сушки — сейчас мы строим фундамент.`; 
+                    verdictEl.innerHTML = `<strong>Анализ (${(ratio*100).toFixed(0)}% от макс.):</strong> Мышечный фундамент откровенно слаб. Это не приговор, а точка старта. <br><br><strong>Стратегия:</strong> Категорически необходим силовой цикл (базовые многосуставные движения) и строгий белковый профицит. Ваш соматип требует грамотного восстановления.`; 
                 }
-                else if(normalizedFfmi < 22) { 
+                else if(ratio < 0.92) { 
                     statusEl.innerText = "Атлет"; statusEl.style.color = "#F2F2F2"; 
-                    verdictEl.innerHTML = `<strong>Анализ:</strong> Отличная форма. Вы уже выделяетесь из толпы. Сила начинает работать на ваш статус. <br><br><strong>Стратегия:</strong> Фокус на специализацию и пропорции. Пора выводить качество тела на новый уровень за счет тонкой биохимической настройки питания.`; 
+                    verdictEl.innerHTML = `<strong>Анализ (${(ratio*100).toFixed(0)}% от макс.):</strong> Отличная форма. Вы уже выделяетесь из толпы. Сила начинает работать на ваш статус. <br><br><strong>Стратегия:</strong> Фокус на специализацию и пропорции. Пора выводить качество тела на новый уровень за счет тонкой биохимической настройки питания под ваш тип телосложения.`; 
                 }
-                else if(normalizedFfmi <= baseLimit+0.5) { 
+                else if(ratio <= 1.03) { 
                     statusEl.innerText = "Элита"; statusEl.style.color = "#D4AF37"; 
-                    verdictEl.innerHTML = `<strong>Анализ:</strong> Генетическая элита. Вы подошли к пределу натурального мышечного роста. Ваша дисциплина вызывает абсолютное уважение.<br><br><strong>Стратегия:</strong> Удержание формы, фокус на биохакинге, долголетии связок и идеальном гормональном здоровье.`; 
+                    verdictEl.innerHTML = `<strong>Анализ (${(ratio*100).toFixed(0)}% от макс.):</strong> Генетическая элита. Вы подошли к пределу натурального мышечного роста. Ваша дисциплина вызывает абсолютное уважение.<br><br><strong>Стратегия:</strong> Удержание формы, фокус на биохакинге, долголетии связок и идеальном гормональном здоровье.`; 
                 }
                 else { 
                     statusEl.innerText = "Unnatural"; statusEl.style.color = "#ef4444"; 
-                    verdictEl.innerHTML = `<strong>Анализ:</strong> Показатели выходят за рамки натуральной генетики. Вероятнее всего, задействованы экзогенные гормоны. <br><br><strong>Стратегия:</strong> Строжайший медицинский контроль: липидный профиль, печеночные пробы, гематокрит. Ваше здоровье сейчас важнее бицепса.`; 
+                    verdictEl.innerHTML = `<strong>Анализ:</strong> Показатели выходят за рамки вашей генетики (${(ratio*100).toFixed(0)}% от макс.). Вероятно, задействованы экзогенные гормоны. <br><br><strong>Стратегия:</strong> Строжайший медицинский контроль: липидный профиль, печеночные пробы, гематокрит. Ваше здоровье сейчас важнее бицепса.`; 
                 }
             } else {
-                if(normalizedFfmi < 15) { 
+                if(ratio < 0.75) { 
                     statusEl.innerText = "Дефицит"; statusEl.style.color = "#B5B5B5"; 
-                    verdictEl.innerHTML = `<strong>Анализ:</strong> Саркопения (нехватка мышечной плотности). Тело может быть худым, но рыхлым (Skinny Fat). <br><br><strong>Стратегия:</strong> Плавно увеличить силовые нагрузки с отягощением и поднять белок. Ваша задача — создать мышечный корсет для упругости форм и здоровья.`; 
+                    verdictEl.innerHTML = `<strong>Анализ (${(ratio*100).toFixed(0)}% от макс.):</strong> Саркопения (нехватка мышечной плотности). Тело может быть худым, но рыхлым (Skinny Fat). <br><br><strong>Стратегия:</strong> Плавно увеличить силовые нагрузки с отягощением и поднять белок. Ваша задача — создать мышечный корсет для упругости форм с учетом вашей генетики.`; 
                 }
-                else if(normalizedFfmi < 18) { 
+                else if(ratio < 0.92) { 
                     statusEl.innerText = "Фитнес"; statusEl.style.color = "#F2F2F2"; 
-                    verdictEl.innerHTML = `<strong>Анализ:</strong> Фитнес-стандарт. Упругое, подтянутое тело с красивыми линиями. <br><br><strong>Стратегия:</strong> Идеальный баланс женственности и спорта. Поддерживайте форму циклированием углеводов и регулярными чекапами (ферритин, щитовидная железа).`; 
+                    verdictEl.innerHTML = `<strong>Анализ (${(ratio*100).toFixed(0)}% от макс.):</strong> Фитнес-стандарт. Упругое, подтянутое тело с красивыми линиями. <br><br><strong>Стратегия:</strong> Идеальный баланс женственности и спорта. Поддерживайте форму циклированием углеводов (особенно важно для вашего соматипа) и регулярными чекапами.`; 
                 }
-                else { 
+                else if(ratio <= 1.03) { 
                     statusEl.innerText = "Элита"; statusEl.style.color = "#D4AF37"; 
-                    verdictEl.innerHTML = `<strong>Анализ:</strong> Высочайший уровень мышечной массы (категории CrossFit / Wellness). <br><br><strong>Стратегия:</strong> Внимательный контроль женского цикла и гормональной панели. Требуется профессиональное восстановление ЦНС после тяжелых нагрузок.`; 
+                    verdictEl.innerHTML = `<strong>Анализ (${(ratio*100).toFixed(0)}% от макс.):</strong> Высочайший уровень мышечной массы (категории CrossFit / Wellness). <br><br><strong>Стратегия:</strong> Внимательный контроль женского цикла и гормональной панели. Требуется профессиональное восстановление ЦНС после тяжелых нагрузок.`; 
+                }
+                else {
+                    statusEl.innerText = "Unnatural"; statusEl.style.color = "#ef4444"; 
+                    verdictEl.innerHTML = `<strong>Анализ:</strong> Мышечная масса превышает натуральный женский предел (${(ratio*100).toFixed(0)}% от макс.). <br><br><strong>Стратегия:</strong> Требуется жесткий контроль андрогенного профиля и профилактика вирилизации. Здоровье репродуктивной системы в приоритете.`; 
                 }
             }
         };
@@ -1903,32 +1921,60 @@
             const w = parseFloat(document.getElementById('nutri-weight').value) || 80;
             const activity = parseFloat(document.getElementById('nutri-activity').value) || 1.55;
 
-            // Формула Миффлина-Сан Жеора
+            // Формула Миффлина-Сан Жеора (база)
             let bmr = (10 * w) + (6.25 * h) - (5 * age);
             bmr += (nutriGender === 'male') ? 5 : -161;
-            let tdee = bmr * activity; 
-            
+
+            // Коррекция BMR (базового метаболизма) по соматипу
+            if (nutriSoma === 'ecto') bmr *= 1.07; // Ускоренный метаболизм, высокий NEAT
+            if (nutriSoma === 'endo') bmr *= 0.93; // Замедленный обмен веществ, склонность к запасанию
+            // Мезоморф остается x1.0
+
+            let tdee = bmr * activity;
+
             let targetCals = tdee;
-            if (nutriGoal === 'cut') targetCals *= 0.8; // Дефицит 20%
-            else if (nutriGoal === 'bulk') targetCals *= 1.15; // Профицит 15%
+            // Коррекция профицита/дефицита по соматипу
+            if (nutriGoal === 'cut') {
+                if (nutriSoma === 'ecto') targetCals *= 0.85; // Меньший дефицит, чтобы не сжечь мышцы
+                else if (nutriSoma === 'endo') targetCals *= 0.75; // Более жесткий дефицит для упрямого жира
+                else targetCals *= 0.80; // Мезоморф: Дефицит 20%
+            } else if (nutriGoal === 'bulk') {
+                if (nutriSoma === 'ecto') targetCals *= 1.20; // Высокий профицит для хардгейнера
+                else if (nutriSoma === 'endo') targetCals *= 1.10; // Аккуратный профицит, чтобы не заплыть
+                else targetCals *= 1.15; // Мезоморф: Профицит 15%
+            }
 
-            // Биохимия Макросов
+            // Биохимия Макросов (научный подход к распределению БЖУ в зависимости от чувствительности к инсулину)
             let p_k = 2.0; let f_k = 1.0;
-            
-            // Соматип 
-            if(nutriSoma === 'ecto') { p_k = 1.8; f_k = 0.85; }
-            if(nutriSoma === 'endo') { p_k = 2.2; f_k = 1.15; }
-            
-            // Цель и пол
-            if(nutriGoal === 'cut') { p_k += 0.2; }
-            if(nutriGender === 'female') { f_k = Math.max(f_k, 1.0); }
 
-            let protein = w * p_k; 
+            // Чувствительность к инсулину и потребность в макронутриентах
+            if (nutriSoma === 'ecto') {
+                // Высокая толерантность к углеводам, белок умеренный (углеводы защищают от катаболизма)
+                p_k = 1.8; f_k = 0.9;
+            } else if (nutriSoma === 'endo') {
+                // Инсулинорезистентность. Углеводы урезаем, белок и жиры держим высоко для сытости и гормонов
+                p_k = 2.3; f_k = 1.2;
+            } else {
+                // Мезоморф (баланс)
+                p_k = 2.0; f_k = 1.0;
+            }
+
+            // Коррекция по полу и цели
+            if (nutriGoal === 'cut') { p_k += 0.3; } // На сушке белок всегда выше
+            if (nutriGender === 'female') { f_k = Math.max(f_k, 1.1); p_k -= 0.2; } // Женщинам нужно больше жиров для гормонов и чуть меньше белка
+
+            let protein = w * p_k;
             let fats = w * f_k;
             let cCals = targetCals - (protein * 4) - (fats * 9);
-            
-            if (cCals < targetCals*0.1) cCals = targetCals*0.1;
+
+            // Защита от отрицательных/слишком низких углеводов
+            if (nutriSoma === 'ecto' && cCals < targetCals * 0.4) cCals = targetCals * 0.4; // Эктоморфам минимум 40% калорий из углей
+            else if (cCals < targetCals * 0.15) cCals = targetCals * 0.15; // Безопасный минимум
+
             let carbs = cCals / 4;
+            
+            // Если из-за защитных углеводов мы вышли за рамки калорийности, пересчитаем калории для точности отображения
+            targetCals = (protein * 4) + (fats * 9) + (carbs * 4);
 
             animateNumber("nutri-cals", 0, targetCals, 1200, true);
             animateNumber("nutri-p", 0, protein, 1200, true);
